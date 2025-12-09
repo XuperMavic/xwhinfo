@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修仙世界 - 个人信息展示网站</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        /* 导航栏样式 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 1000;
+        }
+        
+        /* 左侧头像图标 */
+        .avatar-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .avatar-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            object-fit: contain;
+        }
+        
+        .avatar-icon:hover {
+            transform: scale(1.1);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* 右侧导航文本容器 */
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        /* 导航文本样式 */
+        .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 5px 0;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: #fff;
+        }
+        
+        .nav-link.active {
+            color: #fff;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            border-radius: 1px;
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+        
+        .nav-link.active::after {
+            width: 100%;
+            left: 0;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+        
+        /* 主内容区域 */
+        .main-content {
+            margin-top: 80px;
+            width: 100%;
+            max-width: 960px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 40px;
+            min-height: calc(100vh - 80px);
+        }
+        
+        /* 板块样式 */
+        .section {
+            margin-bottom: 80px;
+        }
+        
+        /* 标题样式 */
+        .section-title {
+            font-size: 38.4px;
+            margin-bottom: 24px;
+            text-align: center;
+            background: linear-gradient(270deg, #00B894, #00CEC9, #0984E3, #6C5CE7, #A29BFE, #00B894);
+            background-size: 800% 800%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            font-weight: bold;
+            text-shadow: 0 0 30px rgba(0, 206, 201, 0.3);
+            animation: gradientAnimation 15s ease infinite;
+        }
+        
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        /* 世界介绍样式 */
+        .world-intro {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #ccc;
+            margin: 0 auto;
+            text-align: left;
+        }
+        
+        /* 境界划分样式 */
+        .realm-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin: 0 auto;
+            max-width: 900px;
+        }
+        
+        /* 境界分组标题 */
+        .realm-group-title {
+            font-size: 24px;
+            color: #fff;
+            font-weight: bold;
+            text-align: center;
+            /* margin: 40px 0 20px; */
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 10px;
+        }
+        
+        /* 境界行 - 修真境界 */
+        .realm-row {
+            display: flex;
+            align-items: stretch;
+            gap: 15px;
+            position: relative;
+        }
+        
+        .realm-row::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.3), rgba(255,255,255,0));
+            z-index: 0;
+        }
+        
+        /* 统一的境界项样式 */
+        .realm-item {
+            flex: 1;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 境界名称 */
+        .realm-name {
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            position: relative;
+            display: inline-block;
+            text-shadow: 0 0 10px currentColor;
+        }
+        
+        /* 境界装饰线 */
+        .realm-name::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            opacity: 0.7;
+        }
+        
+        /* 境界详情 */
+        .realm-detail {
+            font-size: 12px;
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 5px;
+        }
+        
+        /* 凡人境界 */
+        .realm-item.mortal .realm-name {
+            color: #808080;
+        }
+        
+        .realm-item.mortal .realm-name::after {
+            background: linear-gradient(90deg, #808080, #A0A0A0);
+        }
+        
+        /* 绿色境界 */
+        .realm-item.green-realm .realm-name {
+            color: #00B894;
+        }
+        
+        .realm-item.green-realm .realm-name::after {
+            background: linear-gradient(90deg, #00B894, #00CEC9);
+        }
+        
+        /* 蓝色境界 */
+        .realm-item.blue-realm .realm-name {
+            color: #41A6F6;
+        }
+        
+        .realm-item.blue-realm .realm-name::after {
+            background: linear-gradient(90deg, #41A6F6, #55E6C1);
+        }
+        
+        /* 黄色境界 */
+        .realm-item.yellow-realm .realm-name {
+            color: #FFD700;
+        }
+        
+        .realm-item.yellow-realm .realm-name::after {
+            background: linear-gradient(90deg, #FFD700, #FFA502);
+        }
+        
+        /* 仙人境界基础样式 - 统一左侧色块 */
+        .immortal-realm-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 12px;
+            border-radius: 8px 0 0 8px;
+        }
+        
+        /* 仙人境界名称默认颜色 */
+        .immortal-realm-item .realm-name {
+            color: inherit;
+        }
+        
+        /* 仙人境界 - 地仙 */
+        .immortal-realm-item.earth-immortal {
+            background: rgba(230, 57, 70, 0.1);
+            border: 1px solid rgba(230, 57, 70, 0.3);
+        }
+        
+        .immortal-realm-item.earth-immortal::before {
+            background: linear-gradient(to bottom, #E63946, #FF6B6B);
+            box-shadow: 0 0 20px rgba(230, 57, 70, 0.7);
+        }
+        
+        .immortal-realm-item.earth-immortal .realm-name {
+            color: #E63946;
+            text-shadow: 0 0 10px #E63946;
+        }
+        
+        /* 仙人境界 - 天仙 */
+        .immortal-realm-item.heaven-immortal {
+            background: rgba(131, 56, 236, 0.1);
+            border: 1px solid rgba(131, 56, 236, 0.3);
+        }
+        
+        .immortal-realm-item.heaven-immortal::before {
+            background: linear-gradient(to bottom, #8338EC, #A855F7);
+            box-shadow: 0 0 20px rgba(131, 56, 236, 0.7);
+        }
+        
+        .immortal-realm-item.heaven-immortal .realm-name {
+            color: #8338EC;
+            text-shadow: 0 0 10px #8338EC;
+        }
+        
+        /* 仙人境界 - 金仙 */
+        .immortal-realm-item.gold-immortal {
+            background: rgba(255, 183, 3, 0.1);
+            border: 1px solid rgba(255, 183, 3, 0.3);
+        }
+        
+        .immortal-realm-item.gold-immortal::before {
+            background: linear-gradient(to bottom, #FFB703, #FB8500);
+            box-shadow: 0 0 20px rgba(255, 183, 3, 0.7);
+        }
+        
+        .immortal-realm-item.gold-immortal .realm-name {
+            color: #FFB703;
+            text-shadow: 0 0 10px #FFB703;
+        }
+        
+        /* 仙人境界 - 大罗金仙 */
+        .immortal-realm-item.great-immortal {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .immortal-realm-item.great-immortal::before {
+            background: linear-gradient(to bottom, #FFD700, #FFA502, #FFD700);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+        }
+        
+        .immortal-realm-item.great-immortal .realm-name {
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+        
+        /* 仙人境界 - 太乙金仙 */
+        .immortal-realm-item.taichi-immortal {
+            background: rgba(255, 182, 193, 0.1);
+            border: 1px solid rgba(255, 182, 193, 0.3);
+        }
+        
+        .immortal-realm-item.taichi-immortal::before {
+            background: linear-gradient(to bottom, #FFB6C1, #FF69B4, #FFB6C1);
+            box-shadow: 0 0 20px rgba(255, 182, 193, 0.7);
+        }
+        
+        .immortal-realm-item.taichi-immortal .realm-name {
+            color: #FFB6C1;
+            text-shadow: 0 0 10px #FFB6C1;
+        }
+        
+        /* 半圣境界 */
+        .immortal-realm-item.half-saint {
+            background: rgba(255, 105, 180, 0.1);
+            border: 1px solid rgba(255, 105, 180, 0.3);
+        }
+        
+        .immortal-realm-item.half-saint::before {
+            background: linear-gradient(to bottom, #FF69B4, #C71585, #FF69B4);
+            box-shadow: 0 0 25px rgba(255, 105, 180, 0.8);
+        }
+        
+        .immortal-realm-item.half-saint .realm-name {
+            color: #FF69B4;
+            text-shadow: 0 0 10px #FF69B4;
+        }
+        
+        /* 圣人境界 */
+        .immortal-realm-item.saint {
+            background: rgba(155, 89, 182, 0.1);
+            border: 1px solid rgba(155, 89, 182, 0.3);
+        }
+        
+        .immortal-realm-item.saint::before {
+            background: linear-gradient(to bottom, #9B59B6, #8E44AD, #9B59B6);
+            box-shadow: 0 0 20px rgba(155, 89, 182, 0.7);
+        }
+        
+        .immortal-realm-item.saint .realm-name {
+            color: #9B59B6;
+            text-shadow: 0 0 10px #9B59B6;
+        }
+        
+        /* 仙人境界容器 */
+        .immortal-realms {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        /* 仙人境界项目 */
+        .immortal-realm-item {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .immortal-realm-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 10px;
+            height: 100%;
+        }
+        
+        .immortal-realm-content {
+            flex: 1;
+            margin-left: 20px;
+        }
+        
+
+        
+        /* 境界等级指示 */
+        .realm-rank {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-right: 20px;
+            font-family: monospace;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .realm-row {
+                flex-direction: column;
+            }
+            
+            .immortal-realm-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .realm-rank {
+                margin-bottom: 10px;
+                margin-right: 0;
+            }
+            
+            .immortal-realm-content {
+                margin-left: 0;
+            }
+        }
+        
+        /* 身份列表样式 */
+        .identity-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 0 auto;
+        }
+        
+        .identity-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 境界显示相关样式 */
+        .realm-display {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .surface-realm {
+            transition: all 0.5s ease;
+            position: relative;
+        }
+        
+        .actual-realm {
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            font-weight: bold;
+        }
+        
+        .realm-display:hover .surface-realm {
+            text-decoration: line-through;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .realm-display:hover .actual-realm {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        /* 为每个身份卡片添加独特的渐变效果 */
+        .identity-item:nth-child(1) {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .identity-item:nth-child(2) {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+        
+        .identity-item:nth-child(3) {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.05));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        
+        .identity-item:nth-child(4) {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(236, 72, 153, 0.05));
+            border: 1px solid rgba(236, 72, 153, 0.3);
+        }
+        
+        .identity-item:nth-child(5) {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05));
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        
+        .identity-item:nth-child(6) {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.1), rgba(249, 115, 22, 0.05));
+            border: 1px solid rgba(249, 115, 22, 0.3);
+        }
+        
+        .identity-item:nth-child(7) {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(251, 191, 36, 0.05));
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+        
+        /* 第8和第9个身份模块不设置特殊背景颜色 */
+        .identity-item:nth-child(8),
+        .identity-item:nth-child(9) {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .identity-item:hover {
+            /* transform: translateY(-5px); 移除上浮动画 */
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 卡片标题样式 */
+        .identity-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 10px;
+            text-align: center;
+        }
+        
+        /* 为每个卡片标题添加对应颜色 */
+        .identity-item:nth-child(1) .identity-title {
+            color: #10B981;
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+            border-bottom-color: rgba(16, 185, 129, 0.5);
+        }
+        
+        .identity-item:nth-child(2) .identity-title {
+            color: #3B82F6;
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+            border-bottom-color: rgba(59, 130, 246, 0.5);
+        }
+        
+        .identity-item:nth-child(3) .identity-title {
+            color: #8B5CF6;
+            text-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+            border-bottom-color: rgba(139, 92, 246, 0.5);
+        }
+        
+        .identity-item:nth-child(4) .identity-title {
+            color: #EC4899;
+            text-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
+            border-bottom-color: rgba(236, 72, 153, 0.5);
+        }
+        
+        .identity-item:nth-child(5) .identity-title {
+            color: #EF4444;
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+            border-bottom-color: rgba(239, 68, 68, 0.5);
+        }
+        
+        .identity-item:nth-child(6) .identity-title {
+            color: #F97316;
+            text-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
+            border-bottom-color: rgba(249, 115, 22, 0.5);
+        }
+        
+        .identity-item:nth-child(7) .identity-title {
+            color: #FBBF24;
+            text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+            border-bottom-color: rgba(251, 191, 36, 0.5);
+        }
+        
+        /* 第8和第9个身份模块不设置特殊颜色 */
+        .identity-item:nth-child(8) .identity-title,
+        .identity-item:nth-child(9) .identity-title {
+            color: #fff;
+            text-shadow: none;
+            border-bottom-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .identity-info {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .identity-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+            margin-right: 8px;
+        }
+        
+        .identity-value {
+            color: #fff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+        
+        .identity-label {
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .identity-value {
+            font-size: 16px;
+            color: #fff;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .identity-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 20px;
+                height: 70px;
+            }
+            
+            .avatar-icon {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .nav-links {
+                gap: 20px;
+            }
+            
+            .nav-link {
+                font-size: 14px;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <!-- 左侧头像图标 -->
+        <div class="avatar-container">
+            <img src="../icons/more-avatar.png" alt="返回首页" class="avatar-icon" onclick="window.location.href='galaxy.html'">
+        </div>
+        
+        <!-- 右侧导航文本 -->
+        <div class="nav-links">
+            <span class="nav-link">异能世界</span>
+            <span class="nav-link active">修仙世界</span>
+            <span class="nav-link">转职世界</span>
+            <span class="nav-link">现实世界</span>
+        </div>
+    </nav>
+    
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <!-- 第一板块：世界介绍 -->
+        <section class="section">
+            <h2 class="section-title">世界介绍</h2>
+            <div class="world-intro">
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这是一个以修仙为主题的仙侠世界，天地间充满着浓郁的灵气。在这片广阔的大地上，修仙者通过吸纳天地灵气、修炼功法，追求长生不老、得道成仙的至高境界。</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;世界由五大域组成：东荒、西域、南蛮、北域和中洲。每个地域都有其独特的修炼环境和传承。修仙者通过感悟天地法则、凝练道心，一步步突破自身极限，追求大道。</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这个世界中，既有修炼者之间的宗门恩怨、资源争夺，也有与妖魔鬼怪的对抗。修仙之路充满艰险，需要坚定的道心和过人的机缘才能走到顶峰。</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在漫长的修仙历史中，曾出现过许多惊天动地的大能者，他们留下了无数传说和遗迹，等待着有缘人去探索和继承。</p>
+            </div>
+        </section>
+        
+        <!-- 第二板块：境界划分 -->
+        <section class="section">
+            <h2 class="section-title">境界划分</h2>
+            <div class="realm-container">
+                <!-- 凡界 -->
+                <div class="realm-group-title">凡界</div>
+                <div class="realm-row">
+                    <!-- 凡人 -->
+                    <div class="realm-item mortal">
+                        <h3 class="realm-name">凡人</h3>
+                        <p class="realm-detail">境界介绍：普通人类，未踏入修仙之路。</p>
+                        <p class="realm-detail">特征：无特殊能力，受寿命限制。</p>
+                        <p class="realm-detail">寿元：约70-100岁，生老病死。</p>
+                    </div>
+                </div>
+                
+                <!-- 上界 -->
+                <div class="realm-group-title">上界</div>
+                <div class="realm-row">
+                    <!-- 练气期 -->
+                    <div class="realm-item green-realm">
+                        <h3 class="realm-name">练气期</h3>
+                        <p class="realm-detail">境界介绍：修仙入门境界，通过吸纳天地灵气入体，淬炼肉身。</p>
+                        <p class="realm-detail">特征：体内开始凝聚气海，能够感知周围的灵气波动。</p>
+                        <p class="realm-detail">寿元：约150-200岁，身体素质大幅提升。</p>
+                    </div>
+                    
+                    <!-- 筑基期 -->
+                    <div class="realm-item green-realm">
+                        <h3 class="realm-name">筑基期</h3>
+                        <p class="realm-detail">境界介绍：将体内灵气凝聚成液态，筑就道基，为后续修炼打基础。</p>
+                        <p class="realm-detail">特征：能够御使简单的法术，飞行能力初现。</p>
+                        <p class="realm-detail">寿元：约300-500岁，容颜永驻。</p>
+                    </div>
+                    
+                    <!-- 结丹期 -->
+                    <div class="realm-item green-realm">
+                        <h3 class="realm-name">结丹期</h3>
+                        <p class="realm-detail">境界介绍：金丹期的进阶境界，金丹更加凝实，蕴含法则之力。</p>
+                        <p class="realm-detail">特征：可施展出强大的法术，对法则有初步感悟。</p>
+                        <p class="realm-detail">寿元：约1200-1500岁，在修仙界有一定地位。</p>
+                    </div>
+                </div>
+                
+                <div class="realm-row">
+                    <!-- 元婴期 -->
+                    <div class="realm-item blue-realm">
+                        <h3 class="realm-name">元婴期</h3>
+                        <p class="realm-detail">境界介绍：金丹破碎，元婴自现，神魂与法力融合。</p>
+                        <p class="realm-detail">特征：拥有分身之术，元婴可离体存活。</p>
+                        <p class="realm-detail">寿元：约2000-3000岁，已经可以开山立派。</p>
+                    </div>
+                    
+                    <!-- 出窍期 -->
+                    <div class="realm-item blue-realm">
+                        <h3 class="realm-name">出窍期</h3>
+                        <p class="realm-detail">境界介绍：神魂出窍，可神游太虚，探索天地奥秘。</p>
+                        <p class="realm-detail">特征：神魂可长时间离体，日行千里探查。</p>
+                        <p class="realm-detail">寿元：约4000-5000岁，已是一方强者。</p>
+                    </div>
+                    
+                    <!-- 化神期 -->
+                    <div class="realm-item blue-realm">
+                        <h3 class="realm-name">化神期</h3>
+                        <p class="realm-detail">境界介绍：元婴化神，神魂与天地法则初步融合。</p>
+                        <p class="realm-detail">特征：能够施展神通，影响一方天地。</p>
+                        <p class="realm-detail">寿元：约5000-8000岁，成为一方巨擘。</p>
+                    </div>
+                </div>
+                
+                <!-- 大陆 -->
+                <div class="realm-group-title">大陆</div>
+                <div class="realm-row">
+                    <!-- 炼虚期 -->
+                    <div class="realm-item yellow-realm">
+                        <h3 class="realm-name">炼虚期</h3>
+                        <p class="realm-detail">境界介绍：虚空练神，感悟宇宙虚无之道。</p>
+                        <p class="realm-detail">特征：能够破碎虚空，横渡星际。</p>
+                        <p class="realm-detail">寿元：约1-2万岁，已是修仙界顶尖存在。</p>
+                    </div>
+                    
+                    <!-- 合体期 -->
+                    <div class="realm-item yellow-realm">
+                        <h3 class="realm-name">合体期</h3>
+                        <p class="realm-detail">境界介绍：神体合一，道与身完全融合。</p>
+                        <p class="realm-detail">特征：举手投足间可毁天灭地，掌握空间之力。</p>
+                        <p class="realm-detail">寿元：约3-5万岁，可开辟小世界。</p>
+                    </div>
+                    
+                    <!-- 大乘期 -->
+                    <div class="realm-item yellow-realm">
+                        <h3 class="realm-name">大乘期</h3>
+                        <p class="realm-detail">境界介绍：大道已成，距离成仙只有一步之遥。</p>
+                        <p class="realm-detail">特征：能够引动天地之力，与天地共鸣。</p>
+                        <p class="realm-detail">寿元：约8-10万岁，可迎接雷劫洗礼。</p>
+                    </div>
+                </div>
+                
+                <div class="realm-row">
+                    <!-- 渡劫期 -->
+                    <div class="realm-item yellow-realm">
+                        <h3 class="realm-name">渡劫期</h3>
+                        <p class="realm-detail">境界介绍：度过九天雷劫，有望白日飞升。</p>
+                        <p class="realm-detail">特征：法力无边，可与天道抗衡。</p>
+                        <p class="realm-detail">寿元：成功则白日飞升，失败则形神俱灭。</p>
+                    </div>
+                </div>
+                
+                <!-- 仙界 -->
+                <div class="realm-group-title">仙界</div>
+                <div class="immortal-realms">
+                    <!-- 地仙 -->
+                    <div class="immortal-realm-item earth-immortal">
+                        <div class="immortal-realm-content">
+                            <h3 class="realm-name">地仙</h3>
+                            <p class="realm-detail">境界介绍：初入仙途，驻留在下界的仙人。</p>
+                            <p class="realm-detail">特征：拥有法则之力，可创造一方仙境。</p>
+                            <p class="realm-detail">寿元：与天地同寿，不坠轮回。</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 天仙 -->
+                    <div class="immortal-realm-item heaven-immortal">
+                        <div class="immortal-realm-content">
+                            <h3 class="realm-name">天仙</h3>
+                            <p class="realm-detail">境界介绍：飞升仙界，成为真正的仙人。</p>
+                            <p class="realm-detail">特征：掌握更多法则之力，可在仙界逍遥自在。</p>
+                            <p class="realm-detail">寿元：永生不灭，跳出三界外。</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 金仙 -->
+                    <div class="immortal-realm-item gold-immortal">
+                        <div class="immortal-realm-content">
+                            <h3 class="realm-name">金仙</h3>
+                            <p class="realm-detail">境界介绍：金仙不朽，道与法则完全融合。</p>
+                            <p class="realm-detail">特征：可以创造生命，修改法则。</p>
+                            <p class="realm-detail">寿元：永恒存在，为仙界顶尖战力。</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 大罗金仙 -->
+                    <div class="immortal-realm-item great-immortal">
+                        <div class="immortal-realm-content">
+                            <h3 class="realm-name">大罗金仙</h3>
+                            <p class="realm-detail">境界介绍：混元大罗金仙，万劫不磨之体。</p>
+                            <p class="realm-detail">特征：掌握多元宇宙法则，为一方主宰。</p>
+                            <p class="realm-detail">寿元：超越时间束缚，为仙界至尊。</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 太乙金仙 -->
+                    <div class="immortal-realm-item taichi-immortal">
+                        <div class="immortal-realm-content">
+                            <h3 class="realm-name">太乙金仙</h3>
+                            <p class="realm-detail">境界介绍：太乙救苦天尊之境，大道圆满。</p>
+                            <p class="realm-detail">特征：掌握生死轮回，可度化一切生灵。</p>
+                            <p class="realm-detail">寿元：与道同存，永恒不灭。</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 半圣 -->
+                    <div class="immortal-realm-item half-saint">
+                        <div class="immortal-realm-content">
+                            <h3 class="realm-name">半圣</h3>
+                            <p class="realm-detail">境界介绍：接近圣人境界，已初具圣道法则。</p>
+                            <p class="realm-detail">特征：可与天地同存，言出法随。</p>
+                            <p class="realm-detail">寿元：永恒不灭，为天地守护者。</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 圣人 -->
+                    <div class="immortal-realm-item saint">
+                        <div class="immortal-realm-content">
+                            <h3 class="realm-name">圣人</h3>
+                            <p class="realm-detail">境界介绍：天地间的至高存在，掌握本源法则。</p>
+                            <p class="realm-detail">特征：创造天地，演化宇宙，无所不能。</p>
+                            <p class="realm-detail">寿元：与道同在，永生不朽。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 第三板块：我的身份 -->
+        <section class="section">
+            <h2 class="section-title">我的身份</h2>
+            <div class="identity-container">
+                <!-- 身份1 -->
+                <div class="identity-item">
+                    <h3 class="identity-title">浩浩</h3>
+                    <div class="identity-info"><span class="identity-label">境界：</span><span class="identity-value realm-display"><span class="surface-realm">练气中期</span><span class="actual-realm">练气后期</span></span></div>
+                    <div class="identity-info"><span class="identity-label">身份：</span><span class="identity-value">超一流一级宗门内门弟子</span></div>
+                    <div class="identity-info"><span class="identity-label">特长：</span><span class="identity-value">钢琴、游泳</span></div>
+                    <div class="identity-info"><span class="identity-label">法宝：</span><span class="identity-value">乐高、小汽车、植物大战僵尸卡、YAMAHA钢琴</span></div>
+                </div>
+                
+                <!-- 身份2 -->
+                <div class="identity-item">
+                    <h3 class="identity-title">迎风</h3>
+                    <div class="identity-info"><span class="identity-label">境界：</span><span class="identity-value realm-display"><span class="surface-realm">筑基后期</span><span class="actual-realm">筑基中期</span></span></div>
+                    <div class="identity-info"><span class="identity-label">身份：</span><span class="identity-value">一流二级宗门内门弟子</span></div>
+                    <div class="identity-info"><span class="identity-label">特长：</span><span class="identity-value">钢琴、小号、书法、国画、羽毛球、乐高机器人</span></div>
+                    <div class="identity-info"><span class="identity-label">法宝：</span><span class="identity-value">小号、亿年矿物切片、EV3乐高机器人</span></div>
+                </div>
+                
+                <!-- 身份3 -->
+                <div class="identity-item">
+                    <h3 class="identity-title">熊霸天下</h3>
+                    <div class="identity-info"><span class="identity-label">境界：</span><span class="identity-value realm-display"><span class="surface-realm">筑基巅峰</span><span class="actual-realm">筑基后期</span></span></div>
+                    <div class="identity-info"><span class="identity-label">身份：</span><span class="identity-value">一流二级宗门内门弟子</span></div>
+                    <div class="identity-info"><span class="identity-label">特长：</span><span class="identity-value">陀螺、打笔</span></div>
+                    <div class="identity-info"><span class="identity-label">法宝：</span><span class="identity-value">陀螺(胜率>3/4=75%)、重型圆珠笔(胜率>2/3=67%)、七连钢笔飞机(胜率>3/4=75%)、英语奖励加圆形摩擦垫荧光笔(胜率>9/10=90%)、美国迪士尼DIY遥控汽车、3D军舰纸模型</span></div>
+                </div>
+                
+                <!-- 身份4 -->
+                <div class="identity-item">
+                    <h3 class="identity-title">变态</h3>
+                    <div class="identity-info"><span class="identity-label">境界：</span><span class="identity-value realm-display"><span class="surface-realm">半步元婴</span><span class="actual-realm">金丹巅峰</span></span></div>
+                    <div class="identity-info"><span class="identity-label">身份：</span><span class="identity-value">二流三级宗门首席弟子兼供奉长老</span></div>
+                    <div class="identity-info"><span class="identity-label">特长：</span><span class="identity-value">数学、理化、英文</span></div>
+                    <div class="identity-info"><span class="identity-label">法宝：</span><span class="identity-value">可擦笔、草稿本、模考卷、学而思笔记、致学笔记</span></div>
+                </div>
+                
+                <!-- 身份5 -->
+                <div class="identity-item">
+                    <h3 class="identity-title">珠穆朗玛熊</h3>
+                    <div class="identity-info"><span class="identity-label">境界：</span><span class="identity-value realm-display"><span class="surface-realm">金丹后期</span><span class="actual-realm">金丹巅峰</span></span></div>
+                    <div class="identity-info"><span class="identity-label">身份：</span><span class="identity-value">二流三级宗门内门弟子</span></div>
+                    <div class="identity-info"><span class="identity-label">特长：</span><span class="identity-value">小号、摄影、PPT、剪辑、乐高机器人、羽毛球、台球</span></div>
+                    <div class="identity-info"><span class="identity-label">法宝：</span><span class="identity-value">YAMAHA小号YTR-8335//S04、YAMAHA号嘴、银色子弹头号嘴、金色子弹头号嘴、黑卡相机、索尼7a2微单、DJI MAVIC Air、鱼缸</span></div>
+                </div>
+                
+                <!-- 身份6 -->
+                <div class="identity-item">
+                    <h3 class="identity-title">物理小王子</h3>
+                    <div class="identity-info"><span class="identity-label">境界：</span><span class="identity-value realm-display"><span class="surface-realm">元婴巅峰</span><span class="actual-realm">半步出窍</span></span></div>
+                    <div class="identity-info"><span class="identity-label">身份：</span><span class="identity-value">巅峰四级宗门内门弟子</span></div>
+                    <div class="identity-info"><span class="identity-label">特长：</span><span class="identity-value">物理、化学、生物</span></div>
+                    <div class="identity-info"><span class="identity-label">法宝：</span><span class="identity-value">鱼缸实验室、致学笔记</span></div>
+                </div>
+                
+                <!-- 身份7 -->
+                <div class="identity-item">
+                    <h3 class="identity-title">三圈大满贯</h3>
+                    <div class="identity-info"><span class="identity-label">境界：</span><span class="identity-value realm-display"><span class="surface-realm">元婴巅峰</span><span class="actual-realm">元婴后期</span></span></div>
+                    <div class="identity-info"><span class="identity-label">身份：</span><span class="identity-value">巅峰四级宗门内门弟子</span></div>
+                    <div class="identity-info"><span class="identity-label">特长：</span><span class="identity-value">乒乓球、摄影、PPT、剪辑</span></div>
+                    <div class="identity-info"><span class="identity-label">法宝：</span><span class="identity-value">DJI Pocket 1、狂飙龙5X、达克塞纳吉、数字968</span></div>
+                </div>
+                
+                <!-- 身份8 -->
+                <div class="identity-item">
+                    <h3 class="identity-title">随心</h3>
+                    <div class="identity-info"><span class="identity-label">境界：</span><span class="identity-value realm-display"><span class="surface-realm">出窍中期</span><span class="actual-realm">出窍后期</span></span></div>
+                    <div class="identity-info"><span class="identity-label">身份：</span><span class="identity-value">一流五级宗门内门弟子</span></div>
+                    <div class="identity-info"><span class="identity-label">特长：</span><span class="identity-value">摄影、航拍、剪辑、乒乓球</span></div>
+                    <div class="identity-info"><span class="identity-label">法宝：</span><span class="identity-value">DJI MAVIC 3 Pro、DJI MAVIC 4 Pro、DJI RC3、Insta 360、超级VIS、张本salc</span></div>
+                </div>
+                
+                <!-- 身份9 -->
+                <div class="identity-item">
+                    <h3 class="identity-title">极阴</h3>
+                    <div class="identity-info"><span class="identity-label">境界：</span><span class="identity-value realm-display"><span class="surface-realm">出窍中期</span><span class="actual-realm">半步化神</span></span></div>
+                    <div class="identity-info"><span class="identity-label">身份：</span><span class="identity-value">一流五级宗门外门弟子</span></div>
+                    <div class="identity-info"><span class="identity-label">特长：</span><span class="identity-value">人工智能、前端设计、艺设</span></div>
+                    <div class="identity-info"><span class="identity-label">法宝：</span><span class="identity-value">ALIENWARE M16 R1、11英寸 iPad Pro 第4代、外星人鼠标AW610M、罗技键盘Wave Keys、罗技鼠标Lift、罗技鼠标G502 X、日本自旋铅笔</span></div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        // 导航文本点击效果
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                // 根据点击的链接切换到对应页面
+                const worldName = link.textContent;
+                if (worldName === '异能世界') {
+                    window.location.href = 'yineng.html';
+                } else if (worldName === '修仙世界') {
+                    window.location.href = 'xiuxian.html';
+                } else if (worldName === '转职世界') {
+                    window.location.href = 'zhuanzhi.html';
+                } else if (worldName === '现实世界') {
+                    window.location.href = 'reality.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

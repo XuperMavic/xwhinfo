@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>现实世界 - 个人信息展示网站</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        /* 导航栏样式 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 1000;
+        }
+        
+        /* 左侧头像图标 */
+        .avatar-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .avatar-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            object-fit: contain;
+        }
+        
+        .avatar-icon:hover {
+            transform: scale(1.1);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* 右侧导航文本容器 */
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        /* 导航文本样式 */
+        .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 5px 0;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: #fff;
+        }
+        
+        .nav-link.active {
+            color: #fff;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            border-radius: 1px;
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+        
+        .nav-link.active::after {
+            width: 100%;
+            left: 0;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+        
+        /* 主内容区域 */
+        .main-content {
+            margin-top: 80px;
+            width: 100%;
+            max-width: 960px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 40px;
+            min-height: calc(100vh - 80px);
+        }
+        
+        /* 板块样式 */
+        .section {
+            margin-bottom: 80px;
+        }
+        
+        /* 标题样式 */
+        .section-title {
+            font-size: 38.4px;
+            margin-bottom: 24px;
+            text-align: center;
+            background: linear-gradient(270deg, #4158D0, #C850C0, #8338EC, #FFCC70, #FF6B6B, #FB5607, #2EC4B6, #4158D0);
+            background-size: 800% 800%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            font-weight: bold;
+            text-shadow: 0 0 30px rgba(200, 80, 192, 0.3);
+            animation: gradientAnimation 15s ease infinite;
+        }
+        
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        /* 世界介绍样式 */
+        .world-intro {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #ccc;
+            margin: 0 auto;
+            text-align: left;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 20px;
+                height: 70px;
+            }
+            
+            .avatar-icon {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .nav-links {
+                gap: 20px;
+            }
+            
+            .nav-link {
+                font-size: 14px;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <!-- 左侧头像图标 -->
+        <div class="avatar-container">
+            <img src="../icons/more-avatar.png" alt="返回首页" class="avatar-icon" onclick="window.location.href='galaxy.html'">
+        </div>
+        
+        <!-- 右侧导航文本 -->
+        <div class="nav-links">
+            <span class="nav-link">异能世界</span>
+            <span class="nav-link">修仙世界</span>
+            <span class="nav-link">转职世界</span>
+            <span class="nav-link active">现实世界</span>
+        </div>
+    </nav>
+    
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <!-- 第一板块：世界介绍 -->
+        <section class="section">
+            <h2 class="section-title">现实世界</h2>
+            <div class="world-intro">
+                <p>这是我们所生活的真实世界，一个充满无限可能与挑战的现实空间。在这个世界中，没有超自然的异能，没有修仙的长生不老，也没有职业转变的神奇系统。但正是在这种看似平凡的环境中，人类凭借智慧、勇气和毅力，创造了无数奇迹。</p>
+                <p>现实世界是一个多元文化交融的大舞台，科技与艺术在这里碰撞，传统与创新在这里并存。每一个人都是独特的个体，拥有自己的梦想、追求和价值。</p>
+                <p>在这个世界里，成功需要脚踏实地的努力，成长伴随着酸甜苦辣，而友情、亲情和爱情则是最珍贵的情感纽带。尽管生活中充满了不确定性，但正是这种不确定性，让每一次的努力和突破都显得格外有意义。</p>
+                <p>现实或许有时会让人感到疲惫和困惑，但同时它也赋予了我们最真实的体验和最宝贵的回忆。在这个世界中，平凡的生活同样可以绽放出不平凡的光彩。</p>
+            </div>
+        </section>
+        
+        <!-- 第二板块：乒乓球 -->
+        <section class="section">
+            <h2 class="section-title">乒乓球</h2>
+            <div class="gallery-container">
+                <div id="table-tennis-gallery" class="circular-gallery"></div>
+            </div>
+            <div id="table-tennis-details" class="details-container"></div>
+        </section>
+        
+        <!-- 第三板块：观赏鱼 -->
+        <section class="section">
+            <h2 class="section-title">观赏鱼</h2>
+            <div class="gallery-container">
+                <div id="fish-gallery" class="circular-gallery"></div>
+            </div>
+            <div id="fish-details" class="details-container"></div>
+        </section>
+        
+        <!-- 第四板块：水草 -->
+        <section class="section">
+            <h2 class="section-title">水草</h2>
+            <div class="gallery-container">
+                <div id="plants-gallery" class="circular-gallery"></div>
+            </div>
+            <div id="plants-details" class="details-container"></div>
+        </section>
+    </main>
+    
+    <style>
+        /* 圆形画廊样式 */
+        .gallery-container {
+            width: 100%;
+            /* height: 500px; */
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .circular-gallery {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            cursor: grab;
+        }
+        
+        .circular-gallery:active {
+            cursor: grabbing;
+        }
+        
+        /* 详情容器样式 - 透明背景，无边框，增加上下边距 */
+        .details-container {
+            background-color: transparent;
+            color: white;
+            padding: 0;
+            max-width: 100%;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+        
+        /* 雷达图容器样式 - 降低高度，下移位置，位于左侧 */
+        .radar-container {
+            width: 200px;
+            height: 240px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            margin-right: 80px;
+            margin-top: 20px;
+        }
+        
+        /* 雷达图信息样式 - 右侧内容区域，增加上下内边距 */
+        .radar-info {
+            min-width: 400px;
+            overflow: visible;
+            padding-right: 10px;
+            padding-top: 15px;
+            padding-bottom: 15px;
+        }
+        
+        /* 雷达图项目样式 - 同一行显示，减少行间距，使用flex布局 */
+        .radar-item {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            line-height: 1.3;
+            background-color: transparent;
+            padding: 0;
+        }
+        
+        /* 雷达图标题样式 - 位于右侧上方，绿色 */
+        .radar-info h3 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 15px;
+            margin-top: 0;
+        }
+        
+        /* 雷达图标签样式 - 固定宽度，进一步缩小与分数的距离 */
+        .radar-label {
+            font-weight: bold;
+            margin-right: 1px; /* 缩小70%，从3px减至1px */
+            min-width: 80px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0;
+            font-size: 16px;
+            white-space: nowrap;
+            overflow: visible;
+            position: relative;
+        }
+        
+        /* 雷达图分数样式 - 绿色，加粗 */
+        .radar-score {
+            color: #4CAF50;
+            font-weight: bold;
+            margin-right: 10px;
+            min-width: 20px;
+        }
+        
+        /* 雷达图描述样式 - 合适的文字大小和颜色 */
+        .radar-desc {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            flex: 1;
+            line-height: 1.3;
+        }
+        
+        /* 雷达图包装样式 - 增加底部边距 */
+        .radar-chart-wrapper {
+            margin-bottom: 30px;
+            margin-top: 10px;
+            position: relative;
+            width: 100%;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .details-container {
+                flex-direction: column;
+            }
+            
+            .radar-container,
+            .radar-info {
+                width: 100%;
+            }
+        }
+    </style>
+    
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script>
+        // 工具函数
+        function debounce(fn, delay) {
+            let timer = null;
+            return function() {
+                const context = this;
+                const args = arguments;
+                clearTimeout(timer);
+                timer = setTimeout(() => fn.apply(context, args), delay);
+            };
+        }
+        
+        function lerp(a, b, n) {
+            return (1 - n) * a + n * b;
+        }
+        
+        function bindAll(obj, ...methodNames) {
+            methodNames.forEach(methodName => {
+                obj[methodName] = obj[methodName].bind(obj);
+            });
+        }
+        
+        // Title类
+        class Title {
+            constructor({ gl, plane, renderer, text, textColor, fontFamily }) {
+                this.gl = gl;
+                this.plane = plane;
+                this.renderer = renderer;
+                this.text = text;
+                this.textColor = textColor || '#ffffff';
+                this.fontFamily = fontFamily || 'Arial';
+                this.createTexture();
+                this.createMaterial();
+                this.createMesh();
+            }
+            
+            createTexture() {
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                
+                context.font = this.fontFamily;
+                const metrics = context.measureText(this.text);
+                
+                canvas.width = metrics.width + 40;
+                canvas.height = 60;
+                
+                context.font = this.fontFamily;
+                context.fillStyle = this.textColor;
+                context.textAlign = 'center';
+                context.textBaseline = 'middle';
+                context.fillText(this.text, canvas.width / 2, canvas.height / 2);
+                
+                this.texture = new THREE.CanvasTexture(canvas);
+                // 设置最近邻过滤，提高文字清晰度
+                this.texture.minFilter = THREE.NearestFilter;
+                this.texture.magFilter = THREE.NearestFilter;
+            }
+            
+            createMaterial() {
+                this.material = new THREE.MeshBasicMaterial({
+                    map: this.texture,
+                    transparent: true
+                });
+            }
+            
+            createMesh() {
+                this.geometry = new THREE.PlaneGeometry(0.8, 0.2);
+                this.mesh = new THREE.Mesh(this.geometry, this.material);
+                this.mesh.position.y = -0.5;
+                this.plane.add(this.mesh);
+            }
+        }
+        
+        // Media类
+        class Media {
+            constructor({ geometry, gl, image, index, length, renderer, scene, screen, text, viewport, bend, textColor, borderRadius, font }) {
+                this.geometry = geometry;
+                this.gl = gl;
+                this.image = image;
+                this.index = index;
+                this.length = length;
+                this.renderer = renderer;
+                this.scene = scene;
+                this.screen = screen;
+                this.text = text;
+                this.viewport = viewport;
+                this.bend = bend || 0;
+                this.textColor = textColor || '#ffffff';
+                this.borderRadius = borderRadius || 0;
+                this.font = font || 'bold 30px Arial';
+                this.extra = 0;
+                this.isBefore = false;
+                this.isAfter = false;
+                this.speed = 0;
+                
+                this.createProgram();
+                this.createMesh();
+                this.createTitle();
+                this.onResize();
+            }
+            
+            createProgram() {
+                // 简化的vertex shader，移除不必要的圆角计算，专注于基础渲染
+                const vertexShader = `
+                    uniform float uSpeed;
+                    uniform float uTime;
+                    varying vec2 vUv;
+                    
+                    void main() {
+                        vUv = uv;
+                        
+                        // 添加一些基本的动画效果
+                        vec3 p = position;
+                        p.z = (sin(p.x * 4.0 + uTime) * 1.5 + cos(p.y * 2.0 + uTime) * 1.5) * (0.1 + uSpeed * 0.5);
+                        
+                        gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
+                    }
+                `;
+                
+                // 改进的fragment shader，使用参考文件中的图片比例保持和圆角实现
+                const fragmentShader = `
+                    precision highp float;
+                    uniform sampler2D map;
+                    uniform vec2 uImageSizes;
+                    uniform vec2 uPlaneSizes;
+                    uniform float uBorderRadius;
+                    varying vec2 vUv;
+                    
+                    float roundedBoxSDF(vec2 p, vec2 b, float r) {
+                        vec2 d = abs(p) - b;
+                        return length(max(d, vec2(0.0))) + min(max(d.x, d.y), 0.0) - r;
+                    }
+                    
+                    void main() {
+                        // 计算正确的图片比例
+                        vec2 ratio = vec2(
+                            min((uPlaneSizes.x / uPlaneSizes.y) / (uImageSizes.x / uImageSizes.y), 1.0),
+                            min((uPlaneSizes.y / uPlaneSizes.x) / (uImageSizes.y / uImageSizes.x), 1.0)
+                        );
+                        
+                        // 计算居中的UV坐标
+                        vec2 uv = vec2(
+                            vUv.x * ratio.x + (1.0 - ratio.x) * 0.5,
+                            vUv.y * ratio.y + (1.0 - ratio.y) * 0.5
+                        );
+                        
+                        // 获取纹理颜色
+                        vec4 color = texture2D(map, uv);
+                        
+                        // 使用SDF实现平滑的圆角效果
+                        float d = roundedBoxSDF(vUv - 0.5, vec2(0.5 - uBorderRadius), uBorderRadius);
+                        
+                        // 添加抗锯齿
+                        float edgeSmooth = 0.002;
+                        float alpha = 1.0 - smoothstep(-edgeSmooth, edgeSmooth, d);
+                        
+                        gl_FragColor = vec4(color.rgb, color.a * alpha);
+                    }
+                `;
+                
+                this.program = new THREE.ShaderMaterial({
+                    vertexShader,
+                    fragmentShader,
+                    uniforms: {
+                        map: { value: new THREE.TextureLoader().load(this.image) },
+                        uImageSizes: { value: [1, 1] },
+                        uPlaneSizes: { value: [1, 1] },
+                        uSpeed: { value: 0 },
+                        uTime: { value: 100 * Math.random() },
+                        uBorderRadius: { value: this.borderRadius }
+                    },
+                    transparent: true,
+                    depthTest: false,
+                    depthWrite: false
+                });
+                
+                // 正确加载图片并更新纹理
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.src = this.image;
+                img.onload = () => {
+                    // 使用Three.js的纹理加载器正确加载图片
+                    const texture = new THREE.TextureLoader().load(this.image);
+                    // 改为最近邻过滤，提高图片清晰度
+                    texture.minFilter = THREE.NearestFilter;
+                    texture.magFilter = THREE.NearestFilter;
+                    texture.needsUpdate = true;
+                    
+                    // 更新uniforms
+                    this.program.uniforms.map.value = texture;
+                    this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight];
+                    
+                    // 图片加载完成后重新计算并应用正确的平面尺寸
+                    this.onResize();
+                };
+            }
+            
+            createMesh() {
+                this.plane = new THREE.Mesh(this.geometry, this.program);
+                this.scene.add(this.plane);
+            }
+            
+            createTitle() {
+                this.title = new Title({
+                    gl: this.gl,
+                    plane: this.plane,
+                    renderer: this.renderer,
+                    text: this.text,
+                    textColor: this.textColor,
+                    fontFamily: this.font
+                });
+            }
+            
+            update(scroll, direction) {
+                // 强制更新x属性，确保每次都使用最新的width和index计算位置
+                // 这确保了所有图片都能正确对齐，避免错位
+                if (typeof this.width === 'number' && typeof this.index === 'number') {
+                    this.x = this.width * this.index;
+                }
+                
+                // 基于scroll.current计算位置
+                this.plane.position.x = this.x - scroll.current;
+                
+                const x = this.plane.position.x;
+                const H = this.viewport.width / 2;
+                
+                if (this.bend === 0) {
+                    this.plane.position.y = 0;
+                    this.plane.rotation.z = 0;
+                } else {
+                    const B_abs = Math.abs(this.bend);
+                    const R = (H * H + B_abs * B_abs) / (2 * B_abs);
+                    const effectiveX = Math.min(Math.abs(x), H);
+                    
+                    const arc = R - Math.sqrt(R * R - effectiveX * effectiveX);
+                    if (this.bend > 0) {
+                        this.plane.position.y = -arc;
+                        this.plane.rotation.z = -Math.sign(x) * Math.asin(effectiveX / R);
+                    } else {
+                        this.plane.position.y = arc;
+                        this.plane.rotation.z = Math.sign(x) * Math.asin(effectiveX / R);
+                    }
+                }
+                
+                this.speed = scroll.current - scroll.last;
+                this.program.uniforms.uTime.value += 0.04;
+                this.program.uniforms.uSpeed.value = this.speed;
+                
+                // 只计算可见性，不重新定位图片
+                const planeOffset = this.plane.scale.x / 2;
+                const viewportOffset = this.viewport.width / 2;
+                this.isBefore = this.plane.position.x + planeOffset < -viewportOffset;
+                this.isAfter = this.plane.position.x - planeOffset > viewportOffset;
+            }
+            
+            onResize({ screen, viewport } = {}) {
+                if (screen) this.screen = screen;
+                if (viewport) {
+                    this.viewport = viewport;
+                    if (this.program.uniforms.uViewportSizes) {
+                        this.program.uniforms.uViewportSizes.value = [this.viewport.width, this.viewport.height];
+                    }
+                }
+                this.scale = this.screen.height / 1500;
+                
+                // 使用固定的基础宽高比，确保无论图片是否加载成功都保持一致的样式
+                const fixedAspectRatio = 0.5; // 固定宽高比，与默认尺寸280/560一致
+                
+                // 略微放大图片尺寸，将基础高度从560增加到650
+                this.plane.scale.y = (this.viewport.height * (650 * this.scale)) / this.screen.height;
+                // 使用固定比例计算宽度，确保一致性
+                this.plane.scale.x = this.plane.scale.y * fixedAspectRatio;
+                
+                // 仍然保留图片实际尺寸信息，用于渲染
+                const imageSizes = this.program.uniforms.uImageSizes.value;
+                const imageWidth = imageSizes[0] || 280;
+                const imageHeight = imageSizes[1] || 560;
+                this.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
+                
+                // 固定间距，不随图片尺寸变化
+                this.padding = 5;
+                this.width = this.plane.scale.x + this.padding;
+                this.x = this.width * this.index;
+            }
+        }
+        
+        // App类
+        class App {
+            constructor(container, options = {}) {
+                const { items, bend = 3, textColor = '#ffffff', borderRadius = 0.05, font = 'bold 30px Arial', scrollSpeed = 2, scrollEase = 0.05, onItemClick } = options;
+                this.container = container;
+                this.items = items;
+                this.scrollSpeed = scrollSpeed;
+                this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 };
+                this.onItemClick = onItemClick;
+                this.onCheckDebounce = debounce(this.onCheck, 200);
+                
+                // 调整初始化顺序，确保尺寸先正确计算
+                this.createRenderer();
+                this.createCamera();
+                this.createScene();
+                this.createGeometry();
+                
+                // 先设置基础尺寸
+                this.onResize();
+                
+                // 然后创建媒体元素
+                this.createMedias(bend, textColor, borderRadius, font);
+                
+                // 确保所有媒体元素初始尺寸正确
+                if (this.medias) {
+                    this.medias.forEach(media => media.onResize({ screen: this.screen, viewport: this.viewport }));
+                }
+                
+                this.update();
+                this.addEventListeners();
+                
+                // 初始化时触发一次onCheck，确保初始位置正确
+                this.onCheck();
+            }
+            
+            createRenderer() {
+                this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+                this.gl = this.renderer.domElement;
+                this.container.appendChild(this.gl);
+            }
+            
+            createCamera() {
+                this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+                this.camera.position.z = 20;
+            }
+            
+            createScene() {
+                this.scene = new THREE.Scene();
+            }
+            
+            createGeometry() {
+                this.planeGeometry = new THREE.PlaneGeometry(2, 1.5, 100, 50);
+            }
+            
+            createMedias(bend, textColor, borderRadius, font) {
+                // 只使用一组图片，不实现循环效果
+                this.mediasImages = [...this.items];
+                this.medias = this.mediasImages.map((data, index) => {
+                    return new Media({
+                        geometry: this.planeGeometry,
+                        gl: this.gl,
+                        image: data.image,
+                        index,
+                        length: this.mediasImages.length,
+                        renderer: this.renderer,
+                        scene: this.scene,
+                        screen: this.screen,
+                        text: data.text,
+                        viewport: this.viewport,
+                        bend,
+                        textColor,
+                        borderRadius,
+                        font
+                    });
+                });
+            }
+            
+            onTouchDown(e) {
+                this.isDown = true;
+                this.scroll.position = this.scroll.current;
+                this.start = e.touches ? e.touches[0].clientX : e.clientX;
+                this.clickTarget = e.target;
+            }
+            
+            onTouchMove(e) {
+                if (!this.isDown) return;
+                const x = e.touches ? e.touches[0].clientX : e.clientX;
+                const distance = (this.start - x) * (this.scrollSpeed * 0.025);
+                this.scroll.target = this.scroll.position + distance;
+            }
+            
+            onTouchUp(e) {
+                if (!this.isDown) return;
+                this.isDown = false;
+                
+                // 检测是否为点击（移动距离很小）
+                const x = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+                const distance = Math.abs(this.start - x);
+                
+                if (distance < 5 && this.onItemClick && this.medias.length > 0) {
+                    const width = this.medias[0].width;
+                    let itemIndex = Math.round(Math.abs(this.scroll.target) / width);
+                    // 限制索引在有效范围内
+                    itemIndex = Math.max(0, Math.min(itemIndex, this.items.length - 1));
+                    this.onItemClick(this.items[itemIndex], itemIndex);
+                }
+                
+                this.onCheck();
+            }
+            
+            onWheel(e) {
+                const delta = e.deltaY || e.wheelDelta || e.detail;
+                this.scroll.target += (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.2;
+                this.onCheckDebounce();
+            }
+            
+            onCheck() {
+                if (!this.medias || !this.medias[0]) return;
+                
+                // 图片对齐居中逻辑
+                const width = this.medias[0].width;
+                const scrollPos = Math.abs(this.scroll.current);
+                
+                // 计算当前应该居中的项目索引
+                let itemIndex = Math.round(scrollPos / width);
+                
+                // 限制索引在有效范围内
+                itemIndex = Math.max(0, Math.min(itemIndex, this.items.length - 1));
+                
+                // 将滚动目标设置为项目的中央位置
+                this.scroll.target = itemIndex * width;
+                
+                // 自动触发当前显示项目的详情更新，无需点击
+                if (this.onItemClick && this.items.length > 0 && itemIndex < this.items.length) {
+                    // 实时更新雷达图，确保立即响应
+                    // 只有当索引变化时才更新，避免重复更新
+                    if (!this.lastAutoUpdateIndex || this.lastAutoUpdateIndex !== itemIndex) {
+                        this.lastAutoUpdateIndex = itemIndex;
+                        // 立即执行，不等待延迟
+                        this.onItemClick(this.items[itemIndex], itemIndex);
+                    }
+                }
+            }
+            
+            onResize() {
+                this.screen = {
+                    width: this.container.clientWidth,
+                    height: this.container.clientHeight
+                };
+                this.renderer.setSize(this.screen.width, this.screen.height);
+                this.camera.aspect = this.screen.width / this.screen.height;
+                this.camera.updateProjectionMatrix();
+                
+                const fov = (this.camera.fov * Math.PI) / 180;
+                const height = 2 * Math.tan(fov / 2) * this.camera.position.z;
+                const width = height * this.camera.aspect;
+                this.viewport = { width, height };
+                
+                if (this.medias) {
+                    this.medias.forEach(media => media.onResize({ screen: this.screen, viewport: this.viewport }));
+                }
+            }
+            
+            update() {
+                // 计算最大滚动范围
+                const maxScroll = Math.max(0, (this.medias.length - 1) * (this.medias[0]?.width || 1));
+                
+                // 限制滚动目标在有效范围内（0到maxScroll）
+                this.scroll.target = Math.max(0, Math.min(this.scroll.target, maxScroll));
+                
+                // 应用缓动
+                this.scroll.current = lerp(this.scroll.current, this.scroll.target, this.scroll.ease);
+                const direction = this.scroll.current > this.scroll.last ? 'right' : 'left';
+                
+                if (this.medias) {
+                    this.medias.forEach(media => media.update(this.scroll, direction));
+                }
+                
+                this.renderer.render(this.scene, this.camera);
+                this.scroll.last = this.scroll.current;
+                this.raf = requestAnimationFrame(this.update.bind(this));
+            }
+            
+            addEventListeners() {
+                // 为窗口添加resize事件
+                window.addEventListener('resize', this.onResize.bind(this));
+                
+                // 为容器添加其他事件，确保每个画廊独立控制
+                // 移除之前可能存在的事件监听器，避免重复绑定
+                this.container.removeEventListener('mousewheel', this.onWheel.bind(this));
+                this.container.removeEventListener('wheel', this.onWheel.bind(this));
+                this.container.removeEventListener('mousedown', this.onTouchDown.bind(this));
+                this.container.removeEventListener('mousemove', this.onTouchMove.bind(this));
+                this.container.removeEventListener('mouseup', this.onTouchUp.bind(this));
+                this.container.removeEventListener('touchstart', this.onTouchDown.bind(this));
+                this.container.removeEventListener('touchmove', this.onTouchMove.bind(this));
+                this.container.removeEventListener('touchend', this.onTouchUp.bind(this));
+                
+                // 重新绑定事件到容器元素
+                this.container.addEventListener('mousewheel', this.onWheel.bind(this));
+                this.container.addEventListener('wheel', this.onWheel.bind(this));
+                this.container.addEventListener('mousedown', this.onTouchDown.bind(this));
+                this.container.addEventListener('mousemove', this.onTouchMove.bind(this));
+                this.container.addEventListener('mouseup', this.onTouchUp.bind(this));
+                this.container.addEventListener('touchstart', this.onTouchDown.bind(this));
+                this.container.addEventListener('touchmove', this.onTouchMove.bind(this));
+                this.container.addEventListener('touchend', this.onTouchUp.bind(this));
+                
+                // 为防止在容器外部移动时状态不一致
+                document.addEventListener('mouseup', this.onTouchUp.bind(this));
+                document.addEventListener('touchend', this.onTouchUp.bind(this));
+            }
+            
+            destroy() {
+                cancelAnimationFrame(this.raf);
+                this.container.removeChild(this.gl);
+            }
+        }
+        
+        // 渲染雷达图函数
+        function renderRadarChart(container, data, labels, maxValue = 5) {
+            // 清除容器内容
+            container.innerHTML = '';
+            
+            const canvas = document.createElement('canvas');
+            container.appendChild(canvas);
+            const ctx = canvas.getContext('2d');
+            
+            // 添加高DPI支持，解决模糊问题
+            const dpr = window.devicePixelRatio || 1;
+            // 增加canvas尺寸，为标签留出更多空间
+            const displayWidth = 260;
+            const displayHeight = 260;
+            
+            // 设置canvas实际像素尺寸（根据设备像素比）
+            canvas.width = displayWidth * dpr;
+            canvas.height = displayHeight * dpr;
+            
+            // 保持CSS显示尺寸
+            canvas.style.width = displayWidth + 'px';
+            canvas.style.height = displayHeight + 'px';
+            
+            // 缩放上下文以保持清晰度
+            ctx.scale(dpr, dpr);
+            
+            // 立即渲染，不延迟
+            
+            const centerX = displayWidth / 2;
+            const centerY = displayHeight / 2;
+            // 适当减小半径，为标签留出更多空间
+            const radius = Math.min(displayWidth, displayHeight) / 2 - 30;
+            
+            const angleStep = (2 * Math.PI) / labels.length;
+            
+            // 绘制网格和标签
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.lineWidth = 1;
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // 绘制同心圆
+            for (let i = 1; i <= maxValue; i++) {
+                const r = (radius / maxValue) * i;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, r, 0, 2 * Math.PI);
+                ctx.stroke();
+            }
+            
+            // 绘制轴线和标签
+            for (let i = 0; i < labels.length; i++) {
+                const angle = -Math.PI / 2 + i * angleStep;
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY + radius * Math.sin(angle);
+                
+                // 绘制轴线
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                
+                // 绘制标签（只在雷达图上显示角名称，不显示分数）
+                const labelX = centerX + (radius + 15) * Math.cos(angle);
+                const labelY = centerY + (radius + 15) * Math.sin(angle);
+                ctx.fillStyle = 'rgba(255, 255, 255, 1)'; // 增加不透明度使文字更清晰
+                ctx.fillText(labels[i], labelX, labelY);
+            }
+            
+            // 绘制数据区域
+            ctx.beginPath();
+            for (let i = 0; i < data.length; i++) {
+                const value = data[i];
+                const angle = -Math.PI / 2 + i * angleStep;
+                const r = (radius / maxValue) * value;
+                const x = centerX + r * Math.cos(angle);
+                const y = centerY + r * Math.sin(angle);
+                
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(76, 175, 80, 0.4)';
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(76, 175, 80, 1)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // 在数据点上显示分数（层数）- 确保在多边形上方
+            ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+            ctx.font = 'bold 10px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            for (let i = 0; i < data.length; i++) {
+                const value = data[i];
+                const angle = -Math.PI / 2 + i * angleStep;
+                const r = (radius / maxValue) * value;
+                const x = centerX + r * Math.cos(angle);
+                const y = centerY + r * Math.sin(angle);
+                ctx.fillText(value.toString(), x, y);
+            }
+        }
+        
+        // 显示详情函数
+        function showDetails(item, type, detailsContainerId) {
+            const container = document.getElementById(detailsContainerId);
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            // 根据类型设置雷达图配置
+            let radarConfigs = [];
+            
+            if (type === 'table-tennis') {
+                // 获取当前项目的详细描述
+                    const itemName = item.text;
+                    
+                    radarConfigs = [
+                    {
+                        title: '性能雷达图',
+                        labels: ['底劲', '力量', '速度', '控制', '旋转', '弧线'],
+                        data: item.performanceRadar || [3, 3, 3, 3, 3, 3],
+                        descriptions: detailedDescriptions.tableTennis.performance[itemName] || ['']
+                    },
+                    {
+                        title: '技能雷达图',
+                        labels: ['发球', '抢攻', '相持', '摆速', '防守'],
+                        data: item.skillRadar || [3, 3, 3, 3, 3],
+                        descriptions: detailedDescriptions.tableTennis.skill[itemName] || ['']
+                    },
+                    {
+                        title: '区域雷达图',
+                        labels: ['台内', '半出台', '近台', '中台', '远台'],
+                        data: item.areaRadar || [3, 3, 3, 3, 3],
+                        descriptions: detailedDescriptions.tableTennis.area[itemName] || ['']
+                    }
+                ];
+            } else if (type === 'fish') {
+                radarConfigs = [
+                    {
+                        title: '观赏鱼特性',
+                        labels: ['生存力', '繁殖力', '观赏性', '群游性', '温和性', '杂食性'],
+                        data: item.radarData || [3, 3, 3, 3, 3, 3],
+                        descriptions: detailedDescriptions.fish[item.text] || ['']
+                    }
+                ];
+            } else if (type === 'plants') {
+                radarConfigs = [
+                    {
+                        title: '水草特性',
+                        labels: ['水质抗性', '温度抗性', '肥力抗性', '光照抗性', '生长速度', '观赏性'],
+                        data: item.radarData || [3, 3, 3, 3, 3, 3],
+                        descriptions: detailedDescriptions.plants[item.text] || ['']
+                    }
+                ];
+            }
+            
+            // 创建并显示每个雷达图及其信息
+            radarConfigs.forEach(config => {
+                // 创建雷达图容器
+                const radarWrapper = document.createElement('div');
+                radarWrapper.className = 'radar-chart-wrapper';
+                
+                // 创建左右布局容器
+                const radarRow = document.createElement('div');
+                radarRow.style.display = 'flex';
+                radarRow.style.alignItems = 'flex-start';
+                radarRow.style.marginBottom = '20px';
+                
+                // 左侧雷达图
+                const radarContainer = document.createElement('div');
+                radarContainer.className = 'radar-container';
+                radarRow.appendChild(radarContainer);
+                
+                // 右侧信息
+                const radarInfo = document.createElement('div');
+                radarInfo.className = 'radar-info';
+                
+                // 添加标题到右侧
+                const title = document.createElement('h3');
+                title.textContent = config.title;
+                radarInfo.appendChild(title);
+                
+                // 添加各项指标
+                config.labels.forEach((label, index) => {
+                    const itemContainer = document.createElement('div');
+                    itemContainer.className = 'radar-item';
+                    
+                    const labelSpan = document.createElement('span');
+                    labelSpan.className = 'radar-label';
+                    labelSpan.textContent = label;
+                    
+                    const scoreSpan = document.createElement('span');
+                    scoreSpan.className = 'radar-score';
+                    scoreSpan.textContent = config.data[index];
+                    
+                    const descSpan = document.createElement('span');
+                    descSpan.className = 'radar-desc';
+                    descSpan.textContent = config.descriptions[index];
+                    
+                    itemContainer.appendChild(labelSpan);
+                    itemContainer.appendChild(scoreSpan);
+                    itemContainer.appendChild(descSpan);
+                    radarInfo.appendChild(itemContainer);
+                });
+                
+                radarRow.appendChild(radarInfo);
+                radarWrapper.appendChild(radarRow);
+                container.appendChild(radarWrapper);
+                
+                // 渲染雷达图
+                renderRadarChart(radarContainer, config.data, config.labels);
+            });
+        }
+        
+        // 定义详细描述数据
+        const detailedDescriptions = {
+            // 乒乓球拍性能描述
+            tableTennis: {
+                performance: {
+                    '黄河桧木五夹': ['对于300价位桧木底板来说已属上乘', '对于300价位桧木底板来说已属上乘', '对于300价位底板来说属于上乘', '对于300价位底板来说属于上乘', '对于300价位底板来说属于中上乘', '对于300价位底板来说属于中上乘'],
+                    '红双喜狂飙龙5X': ['用得多了会有所下降', '用得多了会有所下降', '相对1000左右同价位地板速度较慢', '龙5控制不必说', '十分好，台内、近台旋转无敌，甚至相比数字968更高', '十分好'],
+                    '达克塞纳吉': ['可能是胶皮搭配不佳导致感觉无力', '可能是胶皮搭配不佳导致感觉无力', '可能是胶皮搭配不佳导致感觉速度未达到预期', '手感清晰细腻，控制好', '可能是胶皮搭配不佳导致旋转体现不出来', '可能是胶皮搭配不佳导致弧线体现不出来'],
+                    '红双喜数字968': ['超模', '无敌', '相比超级纤维蝴蝶球拍在中小力量下慢', '无敌', '无敌，台内、近台旋转相比龙5X低，但随着力量越大', '无敌'],
+                    '蝴蝶超级VIS': ['优秀', '优秀', '超级alc纤维，众所周知', '速度快弧线长导致较难控制', '不比张本salc', '弧线太长，中近台抢攻、拉下旋等易出台'],
+                    '蝴蝶张本salc': ['优秀，略优于超级VIS', '优秀，略优于超级VIS', '略优于数字968，略逊于超级VIS', '无敌，甚至略优于数字968', '优秀', '优秀，部分情况下逊于数字968']
+                },
+                skill: {
+                    '黄河桧木五夹': ['对于300价位桧木底板来说不错', '对于300价位桧木底板来说不错', '对于300价位桧木底板来说不错', '对于300价位桧木底板来说不错', '对于300价位桧木底板来说不错'],
+                    '红双喜狂飙龙5X': ['吃球、转', '龙5不必多说', '较重', '较重', '龙5不必多说'],
+                    '达克塞纳吉': ['手感好、控制好', '可能是胶皮搭配不佳导致速度、力量、旋转未显现，使得抢攻质量缺失', '达克做工不必多说，手感优秀', '轻量级高手感', '手感好，但可能是胶皮搭配不佳导致力量未能发挥出来'],
+                    '红双喜数字968': ['吃球，故旋转相对偏低', '无敌', '旋转越来越强，弧线越来越好，但力量与体力要求越来越高', '动作要求高，且球拍相比蝴蝶略显吃力', '控制无敌'],
+                    '蝴蝶超级VIS': ['较弹，所以发转难', '弧线长，所以易出台', '速度快，但质量相对较低；弧线长，相对更难控制', '手感，但较快', '手感，但较快'],
+                    '蝴蝶张本salc': ['手感好，但吃球略逊于数字968，故旋转相对偏低', '略逊于数字968', '轻松、手感，但质量比数字968低', '轻松、手感，自动回弹', '手感，自动回弹']
+                },
+                area: {
+                    '黄河桧木五夹': ['对于300价位底板来说已属上上乘', '对于300价位底板来说已属上乘', '对于300价位底板来说已属上上乘', '对于300价位底板来说已属上乘', '对于300价位底板来说没有远台'],
+                    '红双喜狂飙龙5X': ['台内旋转无敌', '半出台抢攻无敌', '球拍偏重', '底劲偏难支撑', '底劲难支撑'],
+                    '达克塞纳吉': ['手感好', '手感好，可能是胶皮搭配不佳导致质量没有发挥', '手感好，可能是胶皮搭配不佳导致质量没有发挥', '可能是胶皮搭配不佳导致底劲没有发挥', '可能是胶皮搭配不佳导致底劲没有发挥'],
+                    '红双喜数字968': ['相比龙5X更硬，底劲、力量偏强，但小力量下吃球没那么深', '抢攻无敌', '质量无敌', '质量无敌', '底劲足够，但相比蝴蝶超级纤维速度稍慢、弧线稍短'],
+                    '蝴蝶超级VIS': ['较弹', '弧线长，易出台或下网', '速度快兼备控制好', '速度快兼备控制好', '速度快弧线长、轻松'],
+                    '蝴蝶张本salc': ['控制手感优秀', '控制手感优秀、抢攻优秀', '控制手感力量优秀', '控制手感力量优秀', '相比数字968速度快弧线长、轻松']
+                }
+            },
+            // 观赏鱼描述
+            fish: {
+                '孔雀鱼': ['能生、杂食', '一窝一窝生', '尾巴好看，但不群游；容易杂交，有时不如灯科鱼耐看，分人', '不群友', '可能是因为杂食性，<20%的鱼会有可能啄其他同类的鱼尾或啄小虾，有可能会吃新生小鱼', '啥都吃，甚至鱼缸中有些水草泥和水草就能自给自足'],
+                '红绿灯': ['可能由于多数红绿灯的现实饲养情况，导致适应能力极差', '难在家中鱼缸繁殖', '众所周知', '灯科鱼自带群游属性', '灯科鱼性情温和，但仍然有极小可能会对小虾出手', '灯壳鱼基本啥都吃'],
+                '宝莲灯': ['灯科鱼生存力上佳', '难在家中鱼缸繁殖', '略优于红绿灯；群游，尤其是巴西宝莲灯', '灯科鱼自带群游属性，尤其是巴西宝莲灯', '灯科鱼性情温和，但仍然有极小可能会对小虾出手', '灯壳鱼基本啥都吃'],
+                '红蚂蚁灯': ['理论上对水质敏感、喜好偏酸性，但是实际生存能力尚可', '难在家中鱼缸繁殖', '红色、群游', '群游属性上佳，略低于巴西宝莲灯', '比普通灯科鱼还小，性格温和', '灯壳鱼基本啥都吃，虽为稀有鱼但并不会挑剔'],
+                '皇室青魔鬼': ['稀有灯科鱼相比普通灯科鱼对环境要求偏高', '难在家中鱼缸繁殖', '闪亮、渐变、色彩', '具备群游属性', '较凶，有时会追其它鱼', '灯壳鱼基本啥都吃，但稀有鱼可能稍微挑剔一些'],
+                '帝王灯': ['稀有灯科鱼相比普通灯科鱼对环境要求偏高', '难在家中鱼缸繁殖', '虽然色彩没有皇室青魔鬼色彩艳丽，但有帝王般的高贵与美感', '略微具备群游属性', '在灯科鱼中最凶，基本都会咬别的鱼的尾巴', '灯壳鱼基本啥都吃，但稀有鱼可能稍微挑剔一些'],
+                '巧克力娃娃': ['如若没有合适的食物，会饿死', '难在家中鱼缸繁殖', '可爱，喜不喜欢分人', '无群游性', '肉食性，基本都会咬别的鱼的尾巴', '只吃肉类，多数仅对活红线虫、小型螺类表现出强烈进食欲望'],
+                '老虎小精灵': ['健康、不会饿着，存活率远高于"入缸即死"的"暴毙王"小精灵', '难在家中鱼缸繁殖', '可爱', '会有一起游、觅食的特性', '只吃水藻和部分鱼食，不会对其他生物出手', '只吃水藻和部分鱼食'],
+                '水草虾': ['虾对水质要求相比鱼更高', '需要较稳定的水质', '观赏虾中最为普通的存在，但别有自然美感', '虾不考虑群游属性', '小虾无攻击性', '什么都吃'],
+                '水晶虾': ['水晶虾对水质要求很高，需要稳定的酸性软水', '需要稳定的酸性软水', '红白相间，仿佛锦鲤；变种还有黑白、银河、姘头等', '虾不考虑群游属性', '小虾无攻击性', '在观赏虾中相对挑食']
+            },
+            // 水草描述
+            plants: {
+                '三角莫斯': ['莫斯水草对水质要求不高', '温度稍高后会变得稀疏、变黄', '不需要水草泥，莫斯水草对肥力无要求', '莫斯水草对光照要求不高，但不能太强光', '莫斯水草生长速度相对较快', '层数厚后有层次感'],
+                '爪哇莫斯': ['莫斯水草对水质要求不高', '在莫斯水草中爪哇莫斯属于极不耐热的类型', '不需要水草泥，莫斯水草对肥力无要求', '在莫斯水草中爪哇莫斯更不太耐强光', '莫斯水草生长速度相对较快', '细而飘逸'],
+                '怪蕨莫斯': ['莫斯水草对水质要求不高', '温度稍高后会变得稀疏、变黄', '不需要水草泥，莫斯水草对肥力无要求', '莫斯水草对光照要求不高，但不能太强光', '莫斯水草生长速度相对较快', '有趣'],
+                '红雨伞': ['发色对水质要求较高', '生存对温度要求不高，但发色对温度要求高', '需要水草泥，发色需要一些微量元素的帮助', '发色对光强、光谱有要求', '正常生长速度', '红色草，颜色随品种、环境而变，甚至可以渐变；羽状叶片，形状随品种、环境而变'],
+                '黑木蕨': ['需要水质稳定', '温度不能长时间高于26度', '不需要水草泥', '光照要求不高，但不能太强', '生长缓慢', '自然，喜不喜欢分人'],
+                '青木蕨': ['需要水质稳定', '温度不能长时间高于26度', '不需要水草泥', '光照要求不高，但不能太强', '生长缓慢', '自然，喜不喜欢分人']
+            }
+        };
+
+        // 详细路径诊断功能已移除
+        
+        
+        // 图片组数据
+        const tableTennisData = [
+            {
+                "text": "黄河桧木五夹",
+                "image": "../images/现实世界-乒乓球-黄河桧木五夹.jpg",
+                "performanceRadar": [1.5, 1.5, 2.5, 2, 1.5, 2],
+                "skillRadar": [2, 2, 3, 3, 2],
+                "areaRadar": [1.5, 2, 2.5, 1.5, 1]
+            },
+            {
+                "text": "红双喜狂飙龙5X",
+                "image": "../images/现实世界-乒乓球-红双喜狂飙龙5X.jpg",
+                "performanceRadar": [3, 3, 2.5, 4, 4.5, 4],
+                "skillRadar": [4, 4, 3, 3, 4],
+                "areaRadar": [5, 4, 3.5, 3, 2]
+            },
+            {
+                "text": "达克塞纳吉",
+                "image": "../images/现实世界-乒乓球-达克赛纳吉.jpg",
+                "performanceRadar": [2, 2, 2.5, 4, 2.5, 2.5],
+                "skillRadar": [3, 3, 3, 3, 3],
+                "areaRadar": [3, 3, 2.5, 2, 1]
+            },
+            {
+                "text": "红双喜数字968",
+                "image": "../images/现实世界-乒乓球-红双喜数字968.jpg",
+                "performanceRadar": [6, 5, 4, 4.5, 5, 5],
+                "skillRadar": [4.5, 5.5, 4.5, 3.5, 5],
+                "areaRadar": [4.5, 5, 5, 5.5, 5]
+            },
+            {
+                "text": "蝴蝶超级VIS",
+                "image": "../images/现实世界-乒乓球-蝴蝶超级VIS.jpg",
+                "performanceRadar": [4, 4, 6, 4, 3.5, 3],
+                "skillRadar": [3.5, 4, 4, 4, 4],
+                "areaRadar": [3.5, 3.5, 4, 5, 4.5]
+            },
+            {
+                "text": "蝴蝶张本salc",
+                "image": "../images/现实世界-乒乓球-蝴蝶张本salc.jpg",
+                "performanceRadar": [4.5, 4.5, 4.5, 5, 4, 4],
+                "skillRadar": [4, 4.5, 5, 5.5, 5.5],
+                "areaRadar": [4, 4.5, 4.5, 5, 4.5]
+            }
+        ];
+                
+                const fishData = [
+            {
+                "text": "孔雀鱼",
+                "image": "../images/现实世界-观赏鱼-孔雀鱼.jpg",
+                "radarData": [5, 5, 3, 0, 4, 5]
+            },
+            {
+                "text": "红绿灯",
+                "image": "../images/现实世界-观赏鱼-红绿灯.jpg",
+                "radarData": [2, 0, 3, 2, 4.5, 4]
+            },
+            {
+                "text": "宝莲灯",
+                "image": "../images/现实世界-观赏鱼-宝莲灯.jpg",
+                "radarData": [4, 0, 4, 4, 4.5, 4]
+            },
+            {
+                "text": "红蚂蚁灯",
+                "image": "../images/现实世界-观赏鱼-红蚂蚁灯.jpg",
+                "radarData": [3.5, 0, 4, 3.5, 5, 4]
+            },
+            {
+                "text": "皇室青魔鬼",
+                "image": "../images/现实世界-观赏鱼-皇室青魔鬼.jpg",
+                "radarData": [3.5, 0, 4.5, 2, 3, 3]
+            },
+            {
+                "text": "帝王灯",
+                "image": "../images/现实世界-观赏鱼-帝王灯.jpg",
+                "radarData": [3.5, 0, 4.5, 1, 2, 3]
+            },
+            {
+                "text": "巧克力娃娃",
+                "image": "../images/现实世界-观赏鱼-巧克力娃娃.jpg",
+                "radarData": [3, 0, 4.5, 0, 1, 1]
+            },
+            {
+                "text": "老虎小精灵",
+                "image": "../images/现实世界-观赏鱼-老虎小精灵.jpg",
+                "radarData": [4, 0, 4, 1, 5, 3]
+            },
+            {
+                "text": "水草虾",
+                "image": "../images/现实世界-观赏鱼-水草虾.jpg",
+                "radarData": [3.5, 4, 2, 0, 5, 4]
+            },
+            {
+                "text": "水晶虾",
+                "image": "../images/现实世界-观赏鱼-水晶虾.jpg",
+                "radarData": [1, 2, 5, 0, 5, 3]
+            }
+        ];
+        
+        const plantsData = [
+            {
+                text: '三角莫斯',
+                image: '../images/现实世界-水草-三角莫斯.jpg',
+                radarData: [4, 3, 5, 3.5, 3, 3]
+            },
+            {
+                text: '爪哇莫斯',
+                image: '../images/现实世界-水草-爪哇莫斯.jpg',
+                radarData: [4, 2, 5, 3, 3, 4]
+            },
+            {
+                text: '怪蕨莫斯',
+                image: '../images/现实世界-水草-怪蕨莫斯.jpg',
+                radarData: [4, 3, 5, 3.5, 3, 3.5]
+            },
+            {
+                text: '红雨伞',
+                image: '../images/现实世界-水草-红雨伞.jpg',
+                radarData: [3, 4, 2, 3, 2, 3.5]
+            },
+            {
+                text: '黑木蕨',
+                image: '../images/现实世界-水草-黑木蕨.jpg',
+                radarData: [3.5, 2, 4, 4, 1, 4.5]
+            },
+            {
+                text: '青木蕨',
+                image: '../images/现实世界-水草-青木蕨.jpg',
+                radarData: [3.5, 2, 4, 4, 1, 4.5]
+            }
+        ];
+        
+        // 在数据定义完成后初始化画廊
+        
+        // 初始化画廊
+        function initGallery(containerId, data, detailsContainerId) {
+            console.log(`Initializing gallery: ${containerId}`);
+            
+            // 添加错误处理
+            const container = document.getElementById(containerId);
+            
+            if (!container) {
+                console.error(`Gallery initialization failed: Container with id ${containerId} not found`);
+                return null;
+            }
+            
+            if (!data || !Array.isArray(data) || data.length === 0) {
+                console.error(`Gallery initialization failed: Invalid or empty data for ${containerId}`);
+                return null;
+            }
+            
+            // 确保容器有基本样式
+            container.style.position = 'relative';
+            container.style.width = '100%';
+            container.style.height = '400px';
+            container.style.overflow = 'hidden';
+            container.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+            
+            // 确定类型
+            let type = '';
+            if (containerId.includes('table-tennis')) {
+                type = 'table-tennis';
+            } else if (containerId.includes('fish')) {
+                type = 'fish';
+            } else if (containerId.includes('plants')) {
+                type = 'plants';
+            }
+            
+            console.log(`Gallery ${containerId} has ${data.length} items, type: ${type}`);
+            
+            try {
+                // 创建画廊实例，保留原始数据以使用雷达图信息
+                const gallery = new App(container, {
+                    items: data,
+                    bend: 3,
+                    textColor: '#ffffff',
+                    borderRadius: 0.05,
+                    font: 'bold 24px Arial',
+                    scrollSpeed: 2,
+                    scrollEase: 0.05,
+                    onItemClick: (item, index) => {
+                        try {
+                            console.log(`Item clicked in ${containerId}: index=${index}, text=${item.text}`);
+                            // 显示详情和雷达图
+                            showDetails(item, type, detailsContainerId);
+                        } catch (error) {
+                            console.error(`Error handling item click for ${index} in ${containerId}:`, error);
+                        }
+                    }
+                });
+                
+                // 页面加载时立即显示第一个项目的雷达图
+                if (data.length > 0 && detailsContainerId) {
+                    setTimeout(() => {
+                        showDetails(data[0], type, detailsContainerId);
+                    }, 100);
+                }
+                
+                console.log(`Gallery ${containerId} initialized successfully`);
+                return gallery;
+            } catch (error) {
+                console.error(`Error creating gallery instance for ${containerId}:`, error);
+                return null;
+            }
+        }
+        
+        // 导航文本点击效果
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                // 移除所有链接的active状态
+                navLinks.forEach(l => l.classList.remove('active'));
+                // 为当前点击的链接添加active状态
+                link.classList.add('active');
+                
+                // 根据点击的链接切换到对应页面
+                const worldName = link.textContent;
+                if (worldName === '异能世界') {
+                    window.location.href = 'yineng.html';
+                } else if (worldName === '修仙世界') {
+                    window.location.href = 'xiuxian.html';
+                } else if (worldName === '转职世界') {
+                    window.location.href = 'zhuanzhi.html';
+                } else if (worldName === '现实世界') {
+                    // 平滑滚动到顶部，提供视觉反馈
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    
+                    // 添加视觉反馈效果
+                    const realityTitle = document.querySelector('.section-title');
+                    if (realityTitle) {
+                        realityTitle.style.transition = 'color 0.3s ease';
+                        realityTitle.style.color = '#ff6b6b';
+                        
+                        // 1秒后恢复原色
+                        setTimeout(() => {
+                            realityTitle.style.color = '#ffffff';
+                        }, 1000);
+                    }
+                }
+            });
+        });
+        
+        // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('Initializing galleries...');
+            
+            // 添加全局错误处理
+            window.onerror = function(message, source, lineno, colno, error) {
+                console.error('Global error:', message, 'at', source, 'line', lineno);
+                return true;
+            };
+            
+            // 验证数据完整性
+            console.log('Table tennis data length:', tableTennisData ? tableTennisData.length : 'undefined');
+            console.log('Fish data length:', fishData ? fishData.length : 'undefined');
+            console.log('Plants data length:', plantsData ? plantsData.length : 'undefined');
+            
+            // 保存画廊实例到全局变量，方便调试和单独控制
+            try {
+                window.tableTennisGallery = initGallery('table-tennis-gallery', tableTennisData, 'table-tennis-details');
+                console.log('Table tennis gallery initialized:', !!window.tableTennisGallery);
+            } catch (error) {
+                console.error('Error initializing table tennis gallery:', error);
+            }
+            
+            try {
+                window.fishGallery = initGallery('fish-gallery', fishData, 'fish-details');
+                console.log('Fish gallery initialized:', !!window.fishGallery);
+            } catch (error) {
+                console.error('Error initializing fish gallery:', error);
+            }
+            
+            try {
+                window.plantsGallery = initGallery('plants-gallery', plantsData, 'plants-details');
+                console.log('Plants gallery initialized:', !!window.plantsGallery);
+            } catch (error) {
+                console.error('Error initializing plants gallery:', error);
+            }
+            
+            console.log('Galleries initialization process completed');
+            
+            // 所有功能初始化完成
+        });
+    </script>
+</body>
+</html>

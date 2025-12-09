@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>转职世界 - 个人信息展示网站</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        /* 导航栏样式 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 1000;
+        }
+        
+        /* 左侧头像图标 */
+        .avatar-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .avatar-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            object-fit: contain;
+        }
+        
+        .avatar-icon:hover {
+            transform: scale(1.1);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* 右侧导航文本容器 */
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        /* 导航文本样式 */
+        .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 5px 0;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: #fff;
+        }
+        
+        .nav-link.active {
+            color: #fff;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            border-radius: 1px;
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+        
+        .nav-link.active::after {
+            width: 100%;
+            left: 0;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+        
+        /* 主内容区域 */
+        .main-content {
+            margin-top: 80px;
+            width: 100%;
+            max-width: 960px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 40px;
+            min-height: calc(100vh - 80px);
+        }
+        
+        /* 板块样式 */
+        .section {
+            margin-bottom: 80px;
+        }
+        
+        /* 标题样式 */
+        .section-title {
+            font-size: 38.4px;
+            margin-bottom: 24px;
+            text-align: center;
+            background: linear-gradient(270deg, #00B894, #00CEC9, #0984E3, #6C5CE7, #A29BFE, #00B894);
+            background-size: 800% 800%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            font-weight: bold;
+            text-shadow: 0 0 30px rgba(0, 206, 201, 0.3);
+            animation: gradientAnimation 15s ease infinite;
+        }
+        
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        /* 世界介绍样式 */
+        .world-intro {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #ccc;
+            margin: 0 auto;
+            text-align: left;
+        }
+        
+        /* 职业阶段样式 */
+        .career-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25.6px;
+            margin: 0 auto;
+        }
+        
+        .career-item {
+            padding: 10px 0;
+        }
+        
+        .career-name {
+            font-size: 22.4px;
+            margin-bottom: 15px;
+            color: #fff;
+            font-weight: bold;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .career-name::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #0984E3, #6C5CE7);
+            opacity: 0.7;
+        }
+        
+        .career-detail {
+            font-size: 12.8px;
+            color: #ccc;
+            line-height: 1.8;
+            margin-bottom: 8px;
+            padding-left: 5px;
+        }
+        
+        /* 技能列表样式 */
+        .skill-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 0 auto;
+        }
+        
+        .skill-item {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        
+        .skill-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 25px;
+            margin-bottom: 16px;
+            position: relative;
+        }
+        
+        .skill-level {
+            font-size: 38.4px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            line-height: 1;
+            text-transform: uppercase;
+            filter: brightness(1.1);
+            text-align: center;
+            flex: 0 0 auto;
+            width: 100px;
+        }
+        
+        .skill-level.SSS {
+            color: #8338EC;
+            text-shadow: 0 0 35px rgba(131, 56, 236, 0.7), 0 0 10px rgba(131, 56, 236, 0.9);
+        }
+        
+        .skill-level.S-plus {
+            color: #E63946;
+            text-shadow: 0 0 35px rgba(230, 57, 70, 0.7), 0 0 10px rgba(230, 57, 70, 0.9);
+        }
+        
+        .skill-level.S { color: #41A6F6; text-shadow: 0 0 35px rgba(65, 166, 246, 0.7), 0 0 10px rgba(65, 166, 246, 0.9); }
+
+        .skill-level.A { color: #FFD700; text-shadow: 0 0 35px rgba(255, 215, 0, 0.7), 0 0 10px rgba(255, 215, 0, 0.9); }
+
+        .skill-level.B { color: #2ECC71; text-shadow: 0 0 35px rgba(46, 204, 113, 0.7), 0 0 10px rgba(46, 204, 113, 0.9); }
+
+        .skill-level.C { color: #C0C0C0; text-shadow: 0 0 35px rgba(192, 192, 192, 0.7), 0 0 10px rgba(192, 192, 192, 0.9); }
+
+        .skill-level.SS { color: #E74C3C; text-shadow: 0 0 35px rgba(231, 76, 60, 0.7), 0 0 10px rgba(231, 76, 60, 0.9); }
+
+        .skill-level.E { color: #CD7F32; text-shadow: 0 0 35px rgba(114, 71, 29, 0.7), 0 0 10px rgba(114, 71, 29, 0.9); }
+
+        .skill-level.F { color: #808080; text-shadow: 0 0 35px rgba(128, 128, 128, 0.7), 0 0 10px rgba(128, 128, 128, 0.9); }
+
+        .skill-level.G { color: #404040; text-shadow: 0 0 35px rgba(64, 64, 64, 0.7), 0 0 10px rgba(64, 64, 64, 0.9); }
+        
+        /* 技能名称样式 */
+        .skill-name {
+            font-size: 25.6px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.6), 0 0 8px rgba(255, 255, 255, 0.8);
+            letter-spacing: 1px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            filter: brightness(1.2);
+        }
+        
+        .skill-description {
+            font-size: 14.4px;
+            color: #fff;
+            line-height: 1.8;
+            margin: 20px 0 16px 0;
+        }
+        
+        .skill-origin {
+            font-size: 12.8px;
+            color: #aaa;
+            line-height: 1.6;
+            font-style: italic;
+        }
+        
+        .ability-description {
+            color: #fff;
+            font-size: 14.4px;
+            line-height: 1.8;
+        }
+        
+        .ability-reason {
+            color: #ccc;
+            font-size: 14.4px;
+            line-height: 1.8;
+            margin: 20px 0 16px 0;
+            font-style: italic;
+        }
+        
+        .small-text {
+            font-size: 0.8em;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 20px;
+                height: 70px;
+            }
+            
+            .avatar-icon {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .nav-links {
+                gap: 20px;
+            }
+            
+            .nav-link {
+                font-size: 14px;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <!-- 左侧头像图标 -->
+        <div class="avatar-container">
+            <img src="../icons/more-avatar.png" alt="返回首页" class="avatar-icon" onclick="window.location.href='galaxy.html'">
+        </div>
+        
+        <!-- 右侧导航文本 -->
+        <div class="nav-links">
+            <span class="nav-link">异能世界</span>
+            <span class="nav-link">修仙世界</span>
+            <span class="nav-link active">转职世界</span>
+            <span class="nav-link">现实世界</span>
+        </div>
+    </nav>
+    
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <!-- 第一板块：世界介绍 -->
+        <section class="section">
+            <h2 class="section-title">世界介绍</h2>
+            <div class="world-intro">
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在这个转职世界中，人类被赋予了不同的职业力量。异世界的专职祭坛会让每一个人类觉醒不同天赋。</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每个人于18岁就可以开始第一次转职，转职后会获得独属于自己的天赋。这些天赋属于不同职业，有生活类、有战斗类。不过多数人单次专职获得的天赋都属于一个职业。</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;多数人的一生可以转职3次，每次都有几率获得新的职业的天赋。获得天赋的评级及性质决定着职位的等级。</p>
+            </div>
+        </section>
+        
+        <!-- 第二板块：我的职业 -->
+        <section class="section">
+            <h2 class="section-title">我的职业</h2>
+            <div class="skill-container">
+                <!-- B级别职业 -->
+                <div class="skill-item B">
+                    <div class="skill-header">
+                        <span class="skill-level B">B</span>
+                        <h3 class="skill-name">记录者</h3>
+                    </div>
+                    <p class="skill-description">能够记录世间美好、抓住决定性瞬间，可以胜任多种任务。对于战争，可以作为大型战役战地记者，记录战役、汇报军情、甚至作为斥候；对于工会、集团、乃至国家，可以作为史官与分析师；对于后勤、生活，记录生活、安抚冒险者或军士因为长期战斗而导致的紧绷心弦；对于商业，可以售卖作品，为人们提供情绪价值或为人宣传造势，甚至可以作为间谍刺探、获取、贩卖情报……</p>
+                    <p class="skill-origin">我从小喜欢使用相机记录生活、记录瞬间、记录美丽……初中，所有同学、老师、校领导都知道我的能力；大学，我加入了信宣视频组、乒乓球协会视频组，在其中水平、作品都是顶尖的存在……</p>
+                </div>
+                
+                <!-- C级别职业 -->
+                <div class="skill-item C">
+                    <div class="skill-header">
+                        <span class="skill-level C">C</span>
+                        <h3 class="skill-name">灵植师</h3>
+                    </div>
+                    <p class="skill-description">能够鉴别、培养、改良灵植。灵植师可以查看任何普通乃至稀有的植物属性；擅长种植各种灵植，乃至增加产量、改善品种等。</p>
+                    <p class="skill-origin">我喜欢种植植物，但由于条件有限，多数能够接触的植物都是小型盆栽。我不像他人那么喜欢花类植物，而是更喜欢能够慢慢生长，长时间维持耐看状态的植物，具体类型我也很难描述，比如我喜欢一些"长相特殊"的仙人掌、多肉，与他人所喜爱的品种或许大多不太相同；对于大多数开花植物不会到非常热爱的程度，并不完全因为其观赏时期的短暂性，因为瓜果蔬菜类植物我就很喜欢……对于鱼缸，我更偏向喜爱水草缸、原生缸，大于南美缸、溪流缸等；养殖水草是我的爱好，有时养草大于养鱼。高中还选择生物课题研究水草。</p>
+                </div>
+                
+                <!-- SS级别职业 -->
+                <div class="skill-item SS">
+                    <div class="skill-header">
+                        <span class="skill-level SS">SS</span>
+                        <h3 class="skill-name">商天子</h3>
+                    </div>
+                    <p class="skill-description">拥有无数神奇的点子，总能想出他人之所不能、创他人之所不及，能够轻松做出顶尖作品；拥有鉴别之眼，可以查看天下所有物品的信息，甚至可以敏锐到察觉人心；可以轻松抓取商机、有无限的商业灵感与创新想法，或许对于他人的一点点想法提点，就能使其依靠想法小有成就；在商业竞争中有着不可比拟的优势，可以把握对手心理，更容易通过各种手段压制乃至击垮对手；有着天道的青睐与隐形的特权，……</p>
+                    <p class="skill-origin">我从小富含想象力，而且理科优势极大，有极强的动手能力与比他人更多的想法与创新思维。在初中，学校高层能够争取到的所有项目式比赛都分配给我，由我挑选队员参赛；在高中，多数人为选不出创新可以而烦恼，而我提供了超过100个可行创新点，受博士后导师夸赞，虽然覆盖学科范围广、并非所有符合高中生课题条件，但都有创新性、可行性、或商业价值；在大学，我的想法与观点也源源不断。</p>
+                </div>
+                
+                <!-- S级别职业 -->
+                <div class="skill-item S">
+                    <div class="skill-header">
+                        <span class="skill-level S">S</span>
+                        <h3 class="skill-name">御兽师</h3>
+                    </div>
+                    <p class="skill-description">能够与兽宠缔结契约，驱使兽宠执行任务或命令；能够与动物简单交流，能够获得兽类的亲近与好感，从而让未缔结契约的兽类做一些事或交易交换。</p>
+                    <p class="skill-origin">我从小喜欢水生动物，喜欢去家边大学捞鱼、去湿地公园抓螃蟹，之后保留体型小的用鱼缸养起来，若长大或长期旅游不能照料，就与河中或家边大学人造湖中放生。初中开始有了自己的鱼缸，开始养孔雀鱼、灯科鱼等各种小型热带观赏鱼、观赏虾、观赏螺等。还养猫，一开始是养花园中的新生野猫，但"留不住"；后来养了别家生的小猫，在自家也让它们生了两窝……</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 第三板块：我的灵宠 -->
+        <section class="section">
+            <h2 class="section-title">我的灵宠</h2>
+            <div class="skill-container">
+                <!-- B级别灵宠 -->
+                <div class="skill-item B">
+                    <div class="skill-header">
+                        <span class="skill-level B">B</span>
+                        <div>
+                            <h3 class="skill-name">土灵龟<span class="small-text">（土地公公宠物分身）</span></h3>
+                            <p class="ability-description" style="margin-top: 10px; font-size: 16px; color: #fff;">名字：无</p>
+                            <p class="ability-description" style="margin-top: 5px; font-size: 16px; color: #fff;">天赋：钻地金光、沉眠、赋予、交易、侦察</p>
+                        </div>
+                    </div>
+                    <p class="ability-reason">在我小学初中时，爸爸在花园里种花挖土时常能在地里挖到同一只乌龟，也不是我们放的，而且是活的。我们在我印象中有时隔几周就能挖到、最后个一两年还能挖到，但在我高中后就没遇到了……</p>
+                </div>
+                
+                <!-- E级别灵宠 -->
+                <div class="skill-item E">
+                    <div class="skill-header">
+                        <span class="skill-level E">E</span>
+                        <div>
+                            <h3 class="skill-name">混血猫</h3>
+                            <p class="ability-description" style="margin-top: 10px; font-size: 16px; color: #fff;">名字：蹦蹦</p>
+                            <p class="ability-description" style="margin-top: 5px; font-size: 16px; color: #fff;">天赋：战斗、巡航、斥候</p>
+                        </div>
+                    </div>
+                    <p class="ability-reason">小区里的一直经常来我家花园的母猫在我家所生的7只小猫中的一只。当时养着七只新生小猫和几只小区里其他地方常来的小猫，期间选择最好看的蹦蹦放到家里养。但随着它们长大，蹦蹦越来越频繁地在花园玻璃门前叫门，我们也不得不为它开门放他出去。一开始是一周几次，后来每天一次，之后是每天中午、晚上回次家，然后渐渐几天一回，最后就没有再回来过……</p>
+                </div>
+                
+                <!-- F级别灵宠 -->
+                <div class="skill-item F">
+                    <div class="skill-header">
+                        <span class="skill-level F">F</span>
+                        <div>
+                            <h3 class="skill-name">混血猫</h3>
+                            <p class="ability-description" style="margin-top: 10px; font-size: 16px; color: #fff;">名字：蛋蛋</p>
+                            <p class="ability-description" style="margin-top: 5px; font-size: 16px; color: #fff;">天赋：帅、气运</p>
+                        </div>
+                    </div>
+                    <p class="ability-reason">是蹦蹦不再回来后，第二只养的猫。是我爸同事家生的小猫，始终放于家中养。一只奶牛。四只中最帅的一只，但是怕妹妹。</p>
+                </div>
+                
+                <!-- F级别灵宠 -->
+                <div class="skill-item F">
+                    <div class="skill-header">
+                        <span class="skill-level F">F</span>
+                        <div>
+                            <h3 class="skill-name">混血猫</h3>
+                            <p class="ability-description" style="margin-top: 10px; font-size: 16px; color: #fff;">名字：妹妹</p>
+                            <p class="ability-description" style="margin-top: 5px; font-size: 16px; color: #fff;">天赋：趋吉化凶、繁育</p>
+                        </div>
+                    </div>
+                    <p class="ability-reason">是蹦蹦不再回来后，第一只养的猫。是我爸同事家生的小猫，始终放于家中养。一只眉短。与蛋蛋一起生了2胎，第一次仅1只旺仔；第二次7只包含小宝(金毛)、林妹妹(长毛)、闪电、黑豆……但是现在老是上桌子。</p>
+                </div>
+                
+                <!-- E级别灵宠 -->
+                <div class="skill-item E">
+                    <div class="skill-header">
+                        <span class="skill-level E">E</span>
+                        <div>
+                            <h3 class="skill-name">混血猫<span class="small-text">（寻宝灵猫血脉）</span></h3>
+                            <p class="ability-description" style="margin-top: 10px; font-size: 16px; color: #fff;">名字：旺仔</p>
+                            <p class="ability-description" style="margin-top: 5px; font-size: 16px; color: #fff;">天赋：寻宝</p>
+                        </div>
+                    </div>
+                    <p class="ability-reason">是蛋蛋和妹妹生的第一胎，独生喵。</p>
+                </div>
+                
+                <!-- F级别灵宠 -->
+                <div class="skill-item F">
+                    <div class="skill-header">
+                        <span class="skill-level F">F</span>
+                        <div>
+                            <h3 class="skill-name">混血猫</h3>
+                            <p class="ability-description" style="margin-top: 10px; font-size: 16px; color: #fff;">名字：小宝</p>
+                            <p class="ability-description" style="margin-top: 5px; font-size: 16px; color: #fff;">天赋：来财、气势</p>
+                        </div>
+                    </div>
+                    <p class="ability-reason">是蛋蛋和妹妹生的第二胎七只中的唯一一只毛发偏金的。</p>
+                </div>
+                
+                <!-- G级别灵宠 -->
+                <div class="skill-item G">
+                    <div class="skill-header">
+                        <span class="skill-level G">G</span>
+                        <div>
+                            <h3 class="skill-name">混血孔雀鱼</h3>
+                            <p class="ability-description" style="margin-top: 10px; font-size: 16px; color: #fff;">名字：无</p>
+                            <p class="ability-description" style="margin-top: 5px; font-size: 16px; color: #fff;">天赋：繁殖、生存</p>
+                        </div>
+                    </div>
+                    <p class="ability-reason">是初中后期与高中前期鱼缸里唯一的鱼类品种。没有怎么注意换水、过滤与喂食。但是其中孔雀鱼繁殖、竞争、死亡循环，一直保持数量增长。</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        // 导航文本点击效果
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                // 根据点击的链接切换到对应页面
+                const worldName = link.textContent;
+                if (worldName === '异能世界') {
+                    window.location.href = 'yineng.html';
+                } else if (worldName === '修仙世界') {
+                    window.location.href = 'xiuxian.html';
+                } else if (worldName === '转职世界') {
+                    window.location.href = 'zhuanzhi.html';
+                } else if (worldName === '现实世界') {
+                    window.location.href = 'reality.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

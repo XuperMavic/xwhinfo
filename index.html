@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>个人信息展示</title>
+        <link rel="stylesheet" href="styles/main.css">
+        <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+        <script src="scripts/main.js" defer></script>
+        <script src="scripts/generating_purple.js" defer></script>
+        <script src="scripts/click_spark.js" defer></script>
+        <script src="scripts/text_rain.js" defer></script>
+        <script src="scripts/button-copy.js" defer></script>
+        <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+    </head>
+<body>
+
+    <!-- 左侧边栏 -->
+    <div id="left-sidebar-trigger" class="sidebar-trigger">
+        <input type="checkbox" id="sidebar-checkbox" style="display: none;">
+        <label for="sidebar-checkbox" class="trigger-label">
+            <svg viewBox="0 0 320 512" height="1.5em" xmlns="http://www.w3.org/2000/svg" class="chevron-right"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg>
+        </label>
+    </div>
+    <div id="left-sidebar" class="left-sidebar">
+        <div class="resizable-handle"></div>
+        <div class="sidebar-content">
+            <h3>详细信息</h3>
+            <div id="sidebar-info" class="sidebar-info">
+                <!-- 这里将显示选择的文字的详细信息 -->
+                <p>
+                    点击下方按钮开始探索：
+                    <br>
+                    可以选择特定专业名称查看介绍。
+                </p>
+            </div>
+        </div>
+            <!-- 动画显示容器 -->
+            <div id="animation-container" style="display: none; margin-top: 20px;"></div>
+            <input id="checkbox" type="checkbox" />
+            <label class="switch" for="checkbox"></label>
+            <div style="position: absolute; bottom: 20px; left: 20px;">
+                <button id="collapse-sidebar-btn" class="collapse-sidebar-btn">
+                    <svg viewBox="0 0 320 512" height="1.5em" xmlns="http://www.w3.org/2000/svg" class="chevron-left"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"></path></svg>
+                </button>
+            </div>
+    </div>
+
+    <!-- 第一页：首页 -->
+    <section id="home" class="page active">
+        <!-- 左右分栏布局 -->
+        <div class="home-split-container">
+            <!-- 左侧图片区域 -->
+            <div class="home-left-panel">
+                <div class="home-image-container">
+                    <img src="images/首页-个人照片.jpg" alt="个人照片" class="home-profile-image">
+                </div>
+            </div>
+            
+            <!-- 右侧深灰色区域 -->
+            <div class="home-right-panel">
+                <!-- 标题区域 -->
+                <div class="home-title-section">
+                    <span class="home-title-chinese">我是</span>
+                    <span class="home-title-name" id="animated-name">熊文浩</span>
+                </div>
+                
+                <!-- 信息区域 -->
+                <div class="home-info-section">
+                    <!-- 性别 -->
+                    <div class="info-row">
+                        <div class="info-chinese">
+                            <p><strong>性别：</strong>男</p>
+                        </div>
+                        <div class="info-english">
+                            <p>Male</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 年龄 -->
+                    <div class="info-row">
+                        <div class="info-chinese">
+                            <p><strong>年龄：</strong>21</p>
+                        </div>
+                        <div class="info-english">
+                            <p>21</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 生日 -->
+                    <div class="info-row">
+                        <div class="info-chinese">
+                            <p><strong>生日：</strong>2004/10/19</p>
+                        </div>
+                        <div class="info-english">
+                            <p>2004-10-19</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 籍贯 -->
+                    <div class="info-row">
+                        <div class="info-chinese">
+                            <p><strong>籍贯：</strong>中国 上海</p>
+                        </div>
+                        <div class="info-english">
+                            <p>China Shanghai</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 专业 -->
+                    <div class="info-row">
+                        <div class="info-chinese">
+                            <p><strong>专业：</strong>计算机科学</p>
+                        </div>
+                        <div class="info-english">
+                            <p>Computer Science (CS)</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 学校 -->
+                    <div class="info-row">
+                        <div class="info-chinese">
+                            <p><strong>学校：</strong>华东理工大学</p>
+                        </div>
+                        <div class="info-english">
+                            <p>East China University of Science and Technology (ECUST)</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 公司 -->
+                    <div class="info-row">
+                        <div class="info-chinese">
+                            <p><strong>公司：</strong>现在没有</p>
+                        </div>
+                        <div class="info-english">
+                            <p>Now None</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 现居地 -->
+                    <div class="info-row">
+                        <div class="info-chinese">
+                            <p><strong>现居地：</strong>中国 上海 普陀</p>
+                        </div>
+                        <div class="info-english">
+                            <p>China Shanghai Putuo</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 信息区域下方的按钮容器 -->
+                <div class="text-columns-buttons-container">
+                    <!-- 中文列下方的按钮 -->
+                    <div class="chinese-column-button">
+                        <button class="custom-button learn-more-btn" onclick="navigateTo('basic-info')" title="专注于【信息展示】">了解更多</button>
+                    </div>
+                    <!-- 英文列下方的按钮 -->
+                    <div class="english-column-button">
+                        <button class="custom-button more-button" title="Focus More on 【UI】">More+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 添加标题轮播的JavaScript -->
+    <script>
+    // 文字轮播函数
+    function animateText() {
+        const names = ['熊文浩', 'Xiong Wenhao', 'Howard'];
+        let currentIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typingSpeed = 100; // 打字速度
+        let deletingSpeed = 50; // 删除速度
+        let pauseTime = 2000; // 显示完整名字的停留时间
+        let currentTimeout;
+        
+        const nameElement = document.getElementById('animated-name');
+        
+        function type() {
+            if (isDeleting) {
+                // 删除阶段
+                nameElement.textContent = names[currentIndex].substring(0, charIndex - 1);
+                charIndex--;
+                if (charIndex === 0) {
+                    isDeleting = false;
+                    currentIndex = (currentIndex + 1) % names.length;
+                    typingSpeed = 100;
+                    currentTimeout = setTimeout(type, pauseTime);
+                } else {
+                    currentTimeout = setTimeout(type, deletingSpeed);
+                }
+            } else {
+                // 打字阶段
+                nameElement.textContent = names[currentIndex].substring(0, charIndex + 1);
+                charIndex++;
+                if (charIndex === names[currentIndex].length) {
+                    isDeleting = true;
+                    currentTimeout = setTimeout(type, pauseTime);
+                } else {
+                    currentTimeout = setTimeout(type, typingSpeed);
+                }
+            }
+        }
+        
+        // 开始动画
+        currentTimeout = setTimeout(type, 100);
+        
+        // 清理函数，在页面卸载时调用
+        return () => clearTimeout(currentTimeout);
+    }
+    
+    // 页面加载完成后开始动画
+    document.addEventListener('DOMContentLoaded', () => {
+        animateText();
+    });
+    </script>
+
+    <!-- 第二页：基本信息 -->
+    <section id="basic-info" class="page">
+        <!-- 顶部圆形头像 -->
+        <div class="header-avatar">
+            <img src="images/顶部-头像.jpg" alt="头像" class="avatar-image">
+        </div>
+        
+        <!-- 主导航栏 -->
+        <div class="nav-mount"></div>
+        
+        <!-- 基本信息标题 -->
+        <h3 class="basic-info-title" id="aboutme-title">ABOUT<span class="gold-text">ME</span></h3>
+        
+        <!-- 详细信息区域 -->
+        <div class="basic-info-container">
+            <!-- 只显示文字内容 -->
+            <div class="basic-info-details">
+                <h2 class="basic-info-name">熊文浩</h2>
+                <p class="basic-info-pinyin">Xiong Wenhao</p>
+                <p class="basic-info-english-name">Howard</p>
+                
+                <div class="basic-info-columns">
+                    <div class="basic-info-left-column">
+                        <p class="info-item" title="小学学习书法时，作品需要印”闲章“，书法老师为我取的雅号"><strong>雅号：</strong>迎风</p>
+                        <p class="info-item" title="[性别补充说明]"><strong>性别：</strong>男</p>
+                        <p class="info-item" title="实岁"><strong>年龄：</strong>21</p>
+                        <p class="info-item" title="[身高补充说明]"><strong>身高：</strong>无可奉告</p>
+                        <p class="info-item" title="[体重补充说明]"><strong>体重：</strong>无可奉告</p>
+                        <p class="info-item" title="[生日补充说明]"><strong>生日：</strong>2004-10-19</p>
+                        <p class="info-item" title="[星座补充说明]"><strong>星座：</strong>天秤座</p>
+                        <p class="info-item" title="[籍贯补充说明]"><strong>籍贯：</strong>上海</p>
+                        <p class="info-item" title="[家在补充说明]"><strong>家在：</strong>中国 上海 普陀</p>
+                        <p class="info-item" title="[现居地补充说明]"><strong>现居地：</strong>中国 上海 普陀</p>
+                        <p class="info-item" title="本人 人工智能、机器视觉、自动化、嵌入式、市场营销、艺术设计、媒体、生物、物理、化学 都喜欢"><strong>大学专业：</strong>计算机科学</p>
+                        <p class="info-item" title="[硕士专业补充说明]"><strong>硕士专业：</strong>/</p>
+                        <p class="info-item" title="[博士专业补充说明]"><strong>博士专业：</strong>/</p>
+                        <p class="info-item" title="[公司职位补充说明]"><strong>公司职位：</strong>/</p>
+                    </div>
+                    
+                    <div class="basic-info-right-column">
+                        <p class="info-item" title="【学校】上海市示范性幼儿园&#10;【身份】&#10;【学科】&#10;【职务】"><strong>幼儿园：</strong>上海市实验幼儿园</p>
+                        <p class="info-item" title="【学校】上海市示范性小学；管乐特色小学&#10;【身份】1班，5号&#10;【学科】相对比较擅长数学、英语&#10;【职务】小队长[2年]、中队长[2年]、大队长[1年]、小号二声部[2年]、小号一声部首席[1周]"><strong>小学：</strong>华师大附小</p>
+                        <p class="info-item" title="【学校】普通公立中学；管乐特色中学&#10;【身份】5班(管乐班)，30号&#10;【学科】擅长数学（150分最快40分钟）=&#32;&#32;物理（不应该扣分）=&#32;&#32;化学（扣1分都不应该）>&#32;&#32;英语（一模保底130，二模保底135，中考题保底145）&#10;【职务】团支部书记[3年]、团支部总书记[1年]、大队长[2年]、班长[4年]、学习委员[4年]、数学小队长[2年]、小号三声部首席[3年]&#10;"><strong>初中：</strong>华师大四附中</p>
+                        <p class="info-item" title="【学校】上海”四大名校“；全国排名Top2(最高)，我上学时排名Top6-7&#10;【身份】2班(科创班)，29号&#10;【学科】擅长物理（高三包揽80%大小测验年级Top1）>&#32;&#32;化学（大多年级前10，正常年级前5）>&#32;&#32;数学（大考最高年级Top3）&#10;【职务】"><strong>高中：</strong>华师大二附中(普陀校区)</p>
+                        <p class="info-item" title="【学校】全国重点大学；211工程；985创新平台；双一流&#10;【身份】计232，23013139&#10;【学科】专注于机器视觉、语音合成、软件设计……&#10;【职务】学生会信宣成员[1年]、乒乓球协会视频组成员[2年]"><strong>大学：</strong>华东理工大学</p>
+                        <p class="info-item" title="大一~大三——奉贤（郊区，回家要：旅游巴士->走路->地铁->单车）&#10;大四——徐汇(市区)"><strong>学校地址：</strong>中国 上海 奉贤/徐汇</p>
+                        <p class="info-item" title="[硕士学校补充说明]"><strong>硕士：</strong>/</p>
+                        <p class="info-item" title="[硕士地址补充说明]"><strong>学校地址：</strong>/</p>
+                        <p class="info-item" title="[博士学校补充说明]"><strong>博士：</strong>/</p>
+                        <p class="info-item" title="[博士地址补充说明]"><strong>学校地址：</strong>/</p>
+                        <p class="info-item" title="20250714-20250815：外企德科(实习)"><strong>公司：</strong>/</p>
+                        <p class="info-item" title="[公司地址补充说明]"><strong>公司地址：</strong>/</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 专长区域 -->
+        <div class="speciality-container">
+            <h3 class="more-info-title" id="speciality-title">MY<span class="gold-text">SPECIALITY</span></h3>
+            <div class="speciality-grid">
+                <!-- html & css & js -->
+                <div class="speciality-card bg-cn" data-title="前端">
+                    <div class="speciality-header">HTML & CSS & JS & Vue</div>
+                    <ul class="speciality-list">
+                        <li><span class="label">有效代码量：</span><span class="num">3 4 0 0 0 +</span></li>
+                        <li><span class="label">累计代码量：</span><span class="num">3 9 0 0 0 +</span></li>
+                        <li><span class="label">大项目：</span><span class="num">4 +</span></li>
+                        <li><span class="label">模块：</span><span class="num">4 0 +</span></li>
+                    </ul>
+                </div>
+                <!-- JAVA -->
+                <div class="speciality-card bg-cn" data-title="后端">
+                    <div class="speciality-header">JAVA & SQL & Spring Boot</div>
+                    <ul class="speciality-list">
+                        <li><span class="label">有效代码量：</span><span class="num">7 0 0 0 +</span></li>
+                        <li><span class="label">累计代码量：</span><span class="num">8 0 0 0 +</span></li>
+                        <li><span class="label">大项目：</span><span class="num">2 +</span></li>
+                    </ul>
+                </div>
+                <!-- c/c++ -->
+                <div class="speciality-card" data-title="C/C++">
+                    <div class="speciality-header">C / C++</div>
+                    <ul class="speciality-list">
+                        <li><span class="label">有效代码量：</span><span class="num">8 0 0 0 +</span></li>
+                        <li><span class="label">累计代码量：</span><span class="num">8 5 0 0 +</span></li>
+                        <li><span class="label">小项目：</span><span class="num">1 2 +</span></li>
+                    </ul>
+                </div>
+                <!-- Python -->
+                <div class="speciality-card" data-title="Python">
+                    <div class="speciality-header">Python</div>
+                    <ul class="speciality-list">
+                        <li><span class="label">有效代码量：</span><span class="num">9 0 0 0 +</span></li>
+                        <li><span class="label">累计代码量：</span><span class="num">9 5 0 0 +</span></li>
+                        <li><span class="label">小项目：</span><span class="num">5 0 +</span></li>
+                    </ul>
+                </div>
+                <!-- 剪辑 -->
+                <div class="speciality-card bg-cn" data-title="剪辑">
+                    <div class="speciality-header">剪辑</div>
+                    <ul class="speciality-list">
+                        <li><span class="label">作品数：</span><span class="num">4 0 +</span></li>
+                        <li><span class="label">有效时长(min)：</span><span class="num">1 6 0 +</span></li>
+                    </ul>
+                </div>
+                <!-- 摄影 -->
+                <div class="speciality-card bg-cn" data-title="摄影">
+                    <div class="speciality-header">摄影</div>
+                    <ul class="speciality-list">
+                        <li><span class="label">作品数：</span><span class="num">3 0 0 0 +</span></li>
+                        <li><span class="label">累计数：</span><span class="num">6 0 0 0 0 +</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 更多信息区域 -->
+        <div class="more-info-container">
+            <h3 class="more-info-title" id="preference-title">MY<span class="gold-text">PREFERENCE</span></h3>
+            
+            <!-- 按照用户要求的顺序排列：运动、游戏、工作、软件、动物、品牌、美食、饮料、歌曲、电影、动漫、小说、景点、明星、颜色、数值 -->
+            
+            <!-- 可收缩板块 - 喜欢的运动 -->
+            <div class="collapsible-section">
+                <button class="collapsible-header" onclick="toggleSection('sport-section')">
+                    <span class="icon-wrapper">
+                        <img src="icons/喜欢的XX/openmoji--ping-pong.png" alt="运动图标" class="button-icon">
+                    </span>
+                    <span class="button-text">喜欢的运动</span>
+                </button>
+                <div id="sport-section" class="collapsible-content">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+            
+            <!-- 可收缩板块 - 喜欢的游戏 -->
+            <div class="collapsible-section">
+                <button class="collapsible-header" onclick="toggleSection('game-section')">
+                    <span class="icon-wrapper">
+                        <img src="icons/喜欢的XX/Graphics_Card_24x.png" alt="游戏图标" class="button-icon">
+                    </span>
+                    <span class="button-text">喜欢的游戏</span>
+                </button>
+                <div id="game-section" class="collapsible-content">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+            
+            <!-- 可收缩板块 - 喜欢的工作 -->
+            <div class="collapsible-section">
+                <button class="collapsible-header" onclick="toggleSection('work-section')">
+                    <span class="icon-wrapper">
+                        <img src="icons/喜欢的XX/Retro_PC_24x.png" alt="工作图标" class="button-icon-bigger">
+                    </span>
+                    <span class="button-text">喜欢的工作</span>
+                </button>
+                <div id="work-section" class="collapsible-content">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+            
+            <!-- 可收缩板块 - 喜欢的软件 -->
+            <div class="collapsible-section">
+                <button class="collapsible-header" onclick="toggleSection('software-section')">
+                    <span class="icon-wrapper">
+                        <img src="icons/喜欢的XX/openmoji--tablet.png" alt="软件图标" class="button-icon">
+                    </span>
+                    <span class="button-text">喜欢的软件</span>
+                </button>
+                <div id="software-section" class="collapsible-content">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+            
+            <!-- 可收缩板块 - 喜欢的动物 -->
+            <div class="collapsible-section">
+                <button class="collapsible-header" onclick="toggleSection('pet-section')">
+                    <span class="icon-wrapper">
+                        <img src="icons/喜欢的XX/openmoji--cat.png" alt="动物图标" class="button-icon-bigger">
+                    </span>
+                    <span class="button-text">喜欢的动物</span>
+                </button>
+                <div id="pet-section" class="collapsible-content">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+
+            <!-- 可收缩板块 - 喜欢的植物 -->
+            <div class="collapsible-section">
+                <button class="collapsible-header" onclick="toggleSection('plant-section')">
+                    <span class="icon-wrapper">
+                        <img src="icons/喜欢的XX/Camellia_24x.png" alt="植物图标" class="button-icon">
+                    </span>
+                    <span class="button-text">喜欢的植物</span>
+                </button>
+                <div id="plant-section" class="collapsible-content">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+            
+            <!-- 可收缩板块 - 喜欢的品牌 -->
+            <div class="collapsible-section">
+                <button class="collapsible-header" onclick="toggleSection('brand-section')">
+                    <span class="icon-wrapper">
+                        <img src="icons/喜欢的XX/openmoji--apple.png" alt="品牌图标" class="button-icon">
+                    </span>
+                    <span class="button-text">喜欢的品牌</span>
+                </button>
+                <div id="brand-section" class="collapsible-content">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+            
+            <!-- 可收缩板块 - 喜欢的美食 -->
+            <div class="collapsible-section">
+                <button class="collapsible-header" onclick="toggleSection('food-section')">
+                    <span class="icon-wrapper">
+                        <img src="icons/喜欢的XX/Sushi_24x.png" alt="美食图标" class="button-icon-bigger">
+                    </span>
+                    <span class="button-text">喜欢的美食</span>
+                </button>
+                <div id="food-section" class="collapsible-content">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+            
+            <!-- 可收缩板块 - 喜欢的饮料 -->
+            <div class="collapsible-section">
+                <button class="collapsible-header" onclick="toggleSection('drink-section')">
+                    <span class="icon-wrapper">
+                        <img src="icons/喜欢的XX/Soda_24x.png" alt="饮料图标" class="button-icon-bigger">
+                    </span>
+                    <span class="button-text">喜欢的饮料</span>
+                </button>
+                <div id="drink-section" class="collapsible-content">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+            
+            <!-- 可收缩板块 - 喜欢的歌曲 -->
+            <div class="collapsible-section">
+                <button class="collapsible-header" onclick="toggleSection('music-section')">
+                    <span class="icon-wrapper">
+                        <img src="icons/喜欢的XX/Disk_24x.png" alt="歌曲图标" class="button-icon">
+                    </span>
+                    <span class="button-text">喜欢的歌曲</span>
+                </button>
+                <div id="music-section" class="collapsible-content">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+            
+            <!-- 可收缩板块 - 喜欢的电影 -->
+            <div class="collapsible-section">
+                <button class="collapsible-header" onclick="toggleSection('movie-section')">
+                    <span class="icon-wrapper">
+                        <img src="icons/喜欢的XX/openmoji--film-projector.png" alt="电影图标" class="button-icon-bigger">
+                    </span>
+                    <span class="button-text">喜欢的电影</span>
+                </button>
+                <div id="movie-section" class="collapsible-content">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+            
+            <!-- 可收缩板块 - 喜欢的动漫 -->
+            <div class="collapsible-section">
+                <button class="collapsible-header" onclick="toggleSection('anime-section')">
+                    <span class="icon-wrapper">
+                        <img src="icons/喜欢的XX/Shimmering_Cloak_24x.png" alt="动漫图标" class="button-icon">
+                    </span>
+                    <span class="button-text">喜欢的动漫</span>
+                </button>
+                <div id="anime-section" class="collapsible-content">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+            
+            <!-- 可收缩板块 - 喜欢的小说 -->
+            <div class="collapsible-section">
+                <button class="collapsible-header" onclick="toggleSection('novel-section')">
+                    <span class="icon-wrapper">
+                        <img src="icons/喜欢的XX/Spellbook_24x.png" alt="小说图标" class="button-icon">
+                    </span>
+                    <span class="button-text">喜欢的小说</span>
+                </button>
+                <div id="novel-section" class="collapsible-content">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+            
+            <!-- 可收缩板块 - 喜欢的景点 -->
+            <div class="collapsible-section">
+                <button class="collapsible-header" onclick="toggleSection('scenery-section')">
+                    <span class="icon-wrapper">
+                        <img src="icons/喜欢的XX/Torii_24x.png" alt="景点图标" class="button-icon-bigger">
+                    </span>
+                    <span class="button-text">喜欢的景点</span>
+                </button>
+                <div id="scenery-section" class="collapsible-content">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+            
+            <!-- 可收缩板块 - 喜欢的明星 -->
+            <div class="collapsible-section">
+                <button class="collapsible-header" onclick="toggleSection('star-section')">
+                    <span class="icon-wrapper">
+                        <img src="icons/喜欢的XX/openmoji--trump.png" alt="明星图标" class="button-icon">
+                    </span>
+                    <span class="button-text">喜欢的明星</span>
+                </button>
+                <div id="star-section" class="collapsible-content">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+            
+            <!-- 可收缩板块 - 喜欢的颜色 -->
+            <div class="collapsible-section">
+                <button class="collapsible-header" onclick="toggleSection('color-section')">
+                    <span class="icon-wrapper">
+                        <img src="icons/喜欢的XX/openmoji--yin-yang.png" alt="颜色图标" class="button-icon">
+                    </span>
+                    <span class="button-text">喜欢的颜色</span>
+                </button>
+                <div id="color-section" class="collapsible-content">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+            
+            <!-- 可收缩板块 - 喜欢的数值 -->
+            <div class="collapsible-section">
+                <button class="collapsible-header" onclick="toggleSection('number-section')">
+                    <span class="icon-wrapper">
+                        <img src="icons/喜欢的XX/openmoji--hundred-points.png" alt="数值图标" class="button-icon">
+                    </span>
+                    <span class="button-text">喜欢的数值</span>
+                </button>
+                <div id="number-section" class="collapsible-content">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 推荐区域 -->
+        <div class="recommendation-container">
+            <h3 class="more-info-title" id="recommendation-title">RECOMMAND<span class="gold-text">YOU</span></h3>
+            <div class="recommendation-grid">
+                <!-- 模块1 -->
+                <div class="recommendation-card">
+                    <div class="watermark">音乐</div>
+                    <div class="recommendation-header">音乐 — — 精卫</div>
+                    <p class="recommendation-description">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;刘邦项羽鸿门宴专用曲。啊~原来是关中王来了。
+                        <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;短视频平台中有关优秀中国历史电视剧的bgm。
+                    </p>
+                    <div class="recommendation-video">
+                        <video controls preload="metadata" poster="images/poster/recommendation1.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-精卫-1.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                        <video controls preload="metadata" poster="images/poster/recommendation1.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-精卫-2.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                        <video controls preload="metadata" poster="images/poster/recommendation1.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-精卫-3.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                        <video controls preload="metadata" poster="images/poster/recommendation1.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-精卫-4.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                    </div>
+                </div>
+                
+                <!-- 模块2 -->
+                <div class="recommendation-card">
+                    <div class="watermark">音乐</div>
+                    <div class="recommendation-header">音乐 — — 壁上观</div>
+                    <p class="recommendation-description">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;黑神话·悟空专属音乐。
+                        <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;短视频平台上《黑神话·悟空》为七妹剧情准备的bgm。
+                    </p>
+                    <div class="recommendation-video">
+                        <video controls preload="metadata" poster="images/poster/recommendation2.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-壁上观-1.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                        <video controls preload="metadata" poster="images/poster/recommendation2.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-壁上观-2.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                    </div>
+                </div>
+                
+                <!-- 模块3 -->
+                <div class="recommendation-card">
+                    <div class="watermark">音乐</div>
+                    <div class="recommendation-header">音乐 — — 此去半生</div>
+                    <p class="recommendation-description">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;朱棣快乐曲/大明不妙曲。点头yes摇头no，奉天靖难gogogo；来是come去是go，玄武门里double kill。
+                        <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;短视频平台上很火的“虾仁动画”中穿越明朝类型动画的转为朱棣准备的“造反”bgm。bgm一响，老朱就要有台词：“我的标儿”、“我的妹子”、“我的雄英”。
+                    </p>
+                    <div class="recommendation-video">
+                        <video controls preload="metadata" poster="images/poster/recommendation3.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-此去半生-1.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                        <video controls preload="metadata" poster="images/poster/recommendation3.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-此去半生-2.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                    </div>
+                </div>
+                
+                <!-- 模块4 -->
+                <div class="recommendation-card">
+                    <div class="watermark">音乐</div>
+                    <div class="recommendation-header">音乐 — — Once Upon a Time</div>
+                    <p class="recommendation-description">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;黑神话·悟空中哪吒专属音乐，天命人也通用。人，我保住了。经，我取到了……塔是塔，爹是爹，有塔的时候，他叫李靖，没塔的时候，他叫救命。
+                        <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;短视频平台上专为第五回《火焰山》结尾动画中哪吒动画的专用bgm。
+                    </p>
+                    <div class="recommendation-video">
+                        <video controls preload="metadata" poster="images/poster/recommendation4.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-Once Upon a Time-1.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                        <video controls preload="metadata" poster="images/poster/recommendation4.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-Once Upon a Time-2.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                    </div>
+                </div>
+                
+                <!-- 模块5 -->
+                <div class="recommendation-card">
+                    <div class="watermark">运动</div>
+                    <div class="recommendation-header">运动 — — 乒乓球</div>
+                    <p class="recommendation-description">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正手拉球见长。从高中体育专项课开始接触，高二高三迷上，几乎在校天天打，水平属于一流（由于我的高中有乒乓球特色，所以这里的一流含金量高）。之后到大学因为与高中球友分开，打球频率极度下滑。
+                        <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;乒乓！！！旋转！爆冲！弧圈！
+                    </p>
+                    <div class="recommendation-video">
+                        <video controls preload="metadata" poster="images/poster/recommendation5.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-乒乓球-1.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                        <video controls preload="metadata" poster="images/poster/recommendation5.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-乒乓球-2.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                    </div>
+                </div>
+                
+                <!-- 模块6 -->
+                <div class="recommendation-card">
+                    <div class="watermark">游戏</div>
+                    <div class="recommendation-header">游戏 — — 我的世界</div>
+                    <p class="recommendation-description">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要玩单人创造>单人生存，但是非常希望可以多人生存、跑酷、PVP、创造。游戏理念是致力于创建理想的异世界生活区、尽可能不破坏环境、尽可能少利用游戏漏洞或生物刷新特性；建筑理念是追寻符合游戏与现实世界的基本设定，以功能、实用为主，美观为辅；红石理念是实用、隐藏。
+                        <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我在网易手机《我的世界》上使用生存、创造模式游玩地图。想要邀请大家进入我的服务器、使用我的模组。但是这两者目前都在开发中，尚未完成。
+                    </p>
+                    <div class="recommendation-video">
+                        <video controls preload="metadata" poster="images/poster/recommendation6.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-我的世界-1.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                        <video controls preload="metadata" poster="images/poster/recommendation6.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-我的世界-2.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                        <video controls preload="metadata" poster="images/poster/recommendation6.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-我的世界-3.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                        <video controls preload="metadata" poster="images/poster/recommendation6.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-我的世界-4.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                    </div>
+                </div>
+
+                <!-- 模块7 -->
+                <div class="recommendation-card">
+                    <div class="watermark">视频</div>
+                    <div class="recommendation-header">视频 — — 动漫剪辑</div>
+                    <p class="recommendation-description">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要玩单人创造>单人生存，但是非常希望可以多人生存、跑酷、PVP、创造。游戏理念是致力于创建理想的异世界生活区、尽可能不破坏环境、尽可能少利用游戏漏洞或生物刷新特性；建筑理念是追寻符合游戏与现实世界的基本设定，以功能、实用为主，美观为辅；红石理念是实用、隐藏。
+                        <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我在网易手机《我的世界》上使用生存、创造模式游玩地图。想要邀请大家进入我的服务器、使用我的模组。但是这两者目前都在开发中，尚未完成。
+                    </p>
+                    <div class="recommendation-video">
+                        <video controls preload="metadata" poster="images/poster/recommendation6.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-动漫剪辑-1.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                        <video controls preload="metadata" poster="images/poster/recommendation6.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-动漫剪辑-2.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                        <video controls preload="metadata" poster="images/poster/recommendation6.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-动漫剪辑-3.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                    </div>
+                </div>
+
+                <!-- 模块8 -->
+                <div class="recommendation-card">
+                    <div class="watermark">视频</div>
+                    <div class="recommendation-header">视频 — — 自制动画</div>
+                    <p class="recommendation-description">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要玩单人创造>单人生存，但是非常希望可以多人生存、跑酷、PVP、创造。游戏理念是致力于创建理想的异世界生活区、尽可能不破坏环境、尽可能少利用游戏漏洞或生物刷新特性；建筑理念是追寻符合游戏与现实世界的基本设定，以功能、实用为主，美观为辅；红石理念是实用、隐藏。
+                        <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我在网易手机《我的世界》上使用生存、创造模式游玩地图。想要邀请大家进入我的服务器、使用我的模组。但是这两者目前都在开发中，尚未完成。
+                    </p>
+                    <div class="recommendation-video">
+                        <video controls preload="metadata" poster="images/poster/recommendation6.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-自制动画-1.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                        <video controls preload="metadata" poster="images/poster/recommendation6.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-自制动画-2.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                        <video controls preload="metadata" poster="images/poster/recommendation6.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-自制动画-3.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                        <video controls preload="metadata" poster="images/poster/recommendation6.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-自制动画-4.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                    </div>
+                </div>
+
+                <!-- 模块9 -->
+                <div class="recommendation-card">
+                    <div class="watermark">视频</div>
+                    <div class="recommendation-header">视频 — — 好活当赏</div>
+                    <p class="recommendation-description">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要玩单人创造>单人生存，但是非常希望可以多人生存、跑酷、PVP、创造。游戏理念是致力于创建理想的异世界生活区、尽可能不破坏环境、尽可能少利用游戏漏洞或生物刷新特性；建筑理念是追寻符合游戏与现实世界的基本设定，以功能、实用为主，美观为辅；红石理念是实用、隐藏。
+                        <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我在网易手机《我的世界》上使用生存、创造模式游玩地图。想要邀请大家进入我的服务器、使用我的模组。但是这两者目前都在开发中，尚未完成。
+                    </p>
+                    <div class="recommendation-video">
+                        <video controls preload="metadata" poster="images/poster/recommendation6.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-好活当赏-1.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                        <video controls preload="metadata" poster="images/poster/recommendation6.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-好活当赏-2.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                        <video controls preload="metadata" poster="images/poster/recommendation6.jpg">
+                            <source src="videos/基本信息-MYRECOMMENDATION-好活当赏-3.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。请替换为有效视频文件。
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部区域 -->
+        <footer class="home-footer">
+            <h2 class="welcome-text">WELCOME</h2>
+            <nav class="footer-nav">
+                <a href="#home" class="footer-link active">首页</a>
+                <a href="#basic-info" class="footer-link">基本信息</a>
+                <a href="#professional-experience" class="footer-link">专业履历</a>
+                <a href="#skills" class="footer-link">技能介绍</a>
+                <a href="#hobbies" class="footer-link">兴趣爱好</a>
+                <a href="#contact" class="footer-link">联系</a>
+            </nav>
+            <div class="footer-text">
+                <!-- 预留文本区域供用户填写 -->
+                <p>xwhinfo.site域名会保留10年(202511-203511)，10年之后域名可能会改为xwhintro.site</p>
+            </div>
+        </footer>
+    </section>
+
+    <!-- 第三页：专业履历（需要密码访问） -->
+    <section id="professional-experience" class="page">
+        <!-- 内容将通过JavaScript动态加载 -->
+    </section>
+
+    <!-- 第四页：技能介绍 -->
+    <section id="skills" class="page">
+        <!-- 内容将通过JavaScript动态加载 -->
+    </section>
+
+    <!-- 第五页：兴趣爱好 -->
+    <section id="hobbies" class="page">
+        <!-- 内容将通过JavaScript动态加载 -->
+    </section>
+
+    <!-- 第六页：联系（需要密码访问） -->
+    <section id="contact" class="page">
+        <!-- 内容将通过JavaScript动态加载 -->
+    </section>
+
+    <!-- 密码弹窗 -->
+    <div id="password-modal" class="modal">
+        <div class="modal-content">
+            <p id="modal-message">输入密码访问：</p>
+            <input type="password" id="password-input" placeholder="请输入密码">
+            <div style="display: flex; justify-content: space-between; gap: 10px; margin-top: 15px;">
+                <button id="password-submit" onclick="checkPassword()">确认</button>
+                <button id="password-cancel" onclick="hidePasswordModal()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 已删除悬浮图标提示框 -->
+<!-- 公告模态框 -->
+<div id="announcement-modal" class="announcement-modal">
+    <div class="announcement-content">
+        <div class="announcement-header">
+            <h3>最新公告</h3>
+            <button id="announcement-close" class="announcement-close">×</button>
+        </div>
+        <div class="announcement-body">
+            <div class="announcement-item">
+                <div class="announcement-date">2025-11-13</div>
+                <p class="announcement-text">网站初次于github上线。</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

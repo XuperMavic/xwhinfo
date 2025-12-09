@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星空 - 个人信息展示网站</title>
+    <!-- 使用Three.js库实现星空效果 -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            overflow: hidden;
+            background: #000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* 标题文字样式 */
+        .title-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        .title-text h1 {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            line-height: 1.2;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+        
+        /* 按钮容器 */
+        .buttons-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 100px); /* 下移按钮 */
+            display: flex;
+            gap: 20px;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        /* 通用按钮样式 */
+        .learn-more-btn,
+        .log-out-btn {
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 140px; /* 确保按钮宽度一致 */
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Learn More按钮 */
+        .learn-more-btn {
+            background: #fff;
+            color: #000;
+            border: none;
+        }
+        
+        .learn-more-btn:hover {
+            background: #e6e6e6;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Log Out按钮 */
+        .log-out-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .log-out-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .title-text h1 {
+                font-size: 36px;
+            }
+            
+            .buttons-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        /* CSS样式已优化，移除了不再使用的header和back-button样式 */
+        .galaxy-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+        
+        /* 加载状态 */
+        /* 去除了所有加载动画相关样式 */
+    </style>
+</head>
+<body>
+    <!-- 返回功能已整合到Log Out按钮 -->
+    
+    <div class="galaxy-container" id="galaxy-container">
+        
+        <!-- 标题文字 -->
+        <div class="title-text">
+            <h1>I am InspireX,<br>The One in the Galaxy.</h1>
+        </div>
+        
+        <!-- 按钮容器 -->
+        <div class="buttons-container">
+            <button class="learn-more-btn" onclick="window.location.href='worlds.html'">Learn More</button>
+            <button class="log-out-btn" onclick="exitToHome()">Log Out</button>
+        </div>
+    </div>
+    
+    <script>
+        // 退出到首页功能
+        function exitToHome() {
+            // 添加淡出效果
+            const container = document.getElementById('galaxy-container');
+            if (container) {
+                container.style.transition = 'opacity 0.5s ease';
+                container.style.opacity = '0';
+            }
+            
+            // 延迟跳转，让淡出效果可见
+            setTimeout(() => {
+                // 直接跳转到首页
+                window.location.href = '../index.html';
+            }, 500);
+        }
+        
+        // 基于Galaxy.txt实现的星空效果，使用Three.js替代OGL
+        document.addEventListener('DOMContentLoaded', () => {
+            // 配置参数 - 星空效果的各项属性设置
+            const config = {
+                // 焦点位置 [x, y] - 控制星空的焦点坐标，范围0-1
+                focal: [0.5, 0.5],
+                
+                // 旋转向量 [x, y] - 控制星空的初始旋转方向
+                rotation: [1.0, 0.0],
+                
+                // 星星移动速度 - 控制星星流动的基本速度
+                starSpeed: 0.4,
+                
+                // 星星密度 - 控制星空的密集程度，值越大星星越多
+                density: 1.2,
+                
+                // 色调偏移 - 控制星空整体颜色的色调，值越大越偏向蓝紫色
+                hueShift: 140,
+                
+                // 是否禁用动画 - true表示静态星空，false表示动态星空
+                disableAnimation: false,
+                
+                // 全局动画速度 - 控制所有动画元素的速度倍率
+                speed: 0.6,
+                
+                // 是否启用鼠标交互 - true表示允许鼠标影响星空
+                mouseInteraction: true,
+                
+                // 光晕强度 - 控制星星周围光晕的亮度和范围
+                glowIntensity: 0.15,
+                
+                // 色彩饱和度 - 控制星空颜色的鲜艳程度
+                saturation: 0.1,
+                
+                // 是否启用鼠标排斥效果 - true表示星星会远离鼠标
+                mouseRepulsion: true,
+                
+                // 排斥强度 - 控制星星远离鼠标的力度
+                repulsionStrength: 1.5,
+                
+                // 闪烁强度 - 控制星星闪烁的明显程度
+                twinkleIntensity: 0.3,
+                
+                // 自动旋转速度 - 控制星空的自动旋转速率
+                rotationSpeed: 0.07,
+                
+                // 自动中心排斥力 - 控制星星远离屏幕中心的力度
+                autoCenterRepulsion: 0,
+                
+                // 是否透明背景 - true表示背景透明，false表示黑色背景
+                transparent: true
+            };
+
+            // 着色器代码 - 完全保留原始代码
+            const vertexShader = `
+            varying vec2 vUv;
+
+            void main() {
+              vUv = uv;
+              gl_Position = vec4(position, 1.0);
+            }
+            `;
+
+            const fragmentShader = `
+            precision highp float;
+
+            uniform float uTime;
+            uniform vec3 uResolution;
+            uniform vec2 uFocal;
+            uniform vec2 uRotation;
+            uniform float uStarSpeed;
+            uniform float uDensity;
+            uniform float uHueShift;
+            uniform float uSpeed;
+            uniform vec2 uMouse;
+            uniform float uGlowIntensity;
+            uniform float uSaturation;
+            uniform bool uMouseRepulsion;
+            uniform float uTwinkleIntensity;
+            uniform float uRotationSpeed;
+            uniform float uRepulsionStrength;
+            uniform float uMouseActiveFactor;
+            uniform float uAutoCenterRepulsion;
+            uniform bool uTransparent;
+
+            varying vec2 vUv;
+
+            #define NUM_LAYER 4.0
+            #define STAR_COLOR_CUTOFF 0.2
+            #define MAT45 mat2(0.7071, -0.7071, 0.7071, 0.7071)
+            #define PERIOD 3.0
+
+            float Hash21(vec2 p) {
+              p = fract(p * vec2(123.34, 456.21));
+              p += dot(p, p + 45.32);
+              return fract(p.x * p.y);
+            }
+
+            float tri(float x) {
+              return abs(fract(x) * 2.0 - 1.0);
+            }
+
+            float tris(float x) {
+              float t = fract(x);
+              return 1.0 - smoothstep(0.0, 1.0, abs(2.0 * t - 1.0));
+            }
+
+            float trisn(float x) {
+              float t = fract(x);
+              return 2.0 * (1.0 - smoothstep(0.0, 1.0, abs(2.0 * t - 1.0))) - 1.0;
+            }
+
+            vec3 hsv2rgb(vec3 c) {
+              vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+              vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+              return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+            }
+
+            float Star(vec2 uv, float flare) {
+              float d = length(uv);
+              float m = (0.05 * uGlowIntensity) / d;
+              float rays = smoothstep(0.0, 1.0, 1.0 - abs(uv.x * uv.y * 1000.0));
+              m += rays * flare * uGlowIntensity;
+              uv *= MAT45;
+              rays = smoothstep(0.0, 1.0, 1.0 - abs(uv.x * uv.y * 1000.0));
+              m += rays * 0.3 * flare * uGlowIntensity;
+              m *= smoothstep(1.0, 0.2, d);
+              return m;
+            }
+
+            vec3 StarLayer(vec2 uv) {
+              vec3 col = vec3(0.0);
+
+              vec2 gv = fract(uv) - 0.5; 
+              vec2 id = floor(uv);
+
+              for (int y = -1; y <= 1; y++) {
+                for (int x = -1; x <= 1; x++) {
+                  vec2 offset = vec2(float(x), float(y));
+                  vec2 si = id + vec2(float(x), float(y));
+                  float seed = Hash21(si);
+                  float size = fract(seed * 345.32);
+                  float glossLocal = tri(uStarSpeed / (PERIOD * seed + 1.0));
+                  float flareSize = smoothstep(0.9, 1.0, size) * glossLocal;
+
+                  float red = smoothstep(STAR_COLOR_CUTOFF, 1.0, Hash21(si + 1.0)) + STAR_COLOR_CUTOFF;
+                  float blu = smoothstep(STAR_COLOR_CUTOFF, 1.0, Hash21(si + 3.0)) + STAR_COLOR_CUTOFF;
+                  float grn = min(red, blu) * seed;
+                  vec3 base = vec3(red, grn, blu);
+                  
+                  float hue = atan(base.g - base.r, base.b - base.r) / (2.0 * 3.14159) + 0.5;
+                  hue = fract(hue + uHueShift / 360.0);
+                  float sat = length(base - vec3(dot(base, vec3(0.299, 0.587, 0.114)))) * uSaturation;
+                  float val = max(max(base.r, base.g), base.b);
+                  base = hsv2rgb(vec3(hue, sat, val));
+
+                  vec2 pad = vec2(tris(seed * 34.0 + uTime * uSpeed / 10.0), tris(seed * 38.0 + uTime * uSpeed / 30.0)) - 0.5;
+
+                  float star = Star(gv - offset - pad, flareSize);
+                  vec3 color = base;
+
+                  float twinkle = trisn(uTime * uSpeed + seed * 6.2831) * 0.5 + 1.0;
+                  twinkle = mix(1.0, twinkle, uTwinkleIntensity);
+                  star *= twinkle;
+                  
+                  col += star * size * color;
+                }
+              }
+
+              return col;
+            }
+
+            void main() {
+              vec2 focalPx = uFocal * uResolution.xy;
+              vec2 uv = (vUv * uResolution.xy - focalPx) / uResolution.y;
+
+              vec2 mouseNorm = uMouse - vec2(0.5);
+              
+              if (uAutoCenterRepulsion > 0.0) {
+                vec2 centerUV = vec2(0.0, 0.0);
+                float centerDist = length(uv - centerUV);
+                vec2 repulsion = normalize(uv - centerUV) * (uAutoCenterRepulsion / (centerDist + 0.1));
+                uv += repulsion * 0.05;
+              } else if (uMouseRepulsion) {
+                vec2 mousePosUV = (uMouse * uResolution.xy - focalPx) / uResolution.y;
+                float mouseDist = length(uv - mousePosUV);
+                // 减弱排斥效果，增加分母使效果更柔和
+                vec2 repulsion = normalize(uv - mousePosUV) * (uRepulsionStrength / (mouseDist + 0.1));
+                // 降低影响因子使其更自然
+                uv += repulsion * 0.05 * uMouseActiveFactor;
+              } else {
+                // 标准鼠标跟随效果
+                vec2 mouseOffset = mouseNorm * 0.1 * uMouseActiveFactor;
+                uv += mouseOffset;
+              }
+
+              float autoRotAngle = uTime * uRotationSpeed;
+              mat2 autoRot = mat2(cos(autoRotAngle), -sin(autoRotAngle), sin(autoRotAngle), cos(autoRotAngle));
+              uv = autoRot * uv;
+
+              uv = mat2(uRotation.x, -uRotation.y, uRotation.y, uRotation.x) * uv;
+
+              vec3 col = vec3(0.0);
+
+              for (float i = 0.0; i < 1.0; i += 1.0 / NUM_LAYER) {
+                float depth = fract(i + uStarSpeed * uSpeed);
+                float scale = mix(20.0 * uDensity, 0.5 * uDensity, depth);
+                float fade = depth * smoothstep(1.0, 0.9, depth);
+                col += StarLayer(uv * scale + i * 453.32) * fade;
+              }
+
+              if (uTransparent) {
+                float alpha = length(col);
+                alpha = smoothstep(0.0, 0.3, alpha);
+                alpha = min(alpha, 1.0);
+                gl_FragColor = vec4(col, alpha);
+              } else {
+                gl_FragColor = vec4(col, 1.0);
+              }
+            }
+            `;
+
+            // 初始化Three.js场景
+            const container = document.getElementById('galaxy-container');
+            
+            // 创建渲染器
+            const renderer = new THREE.WebGLRenderer({
+                alpha: config.transparent,
+                premultipliedAlpha: false,
+                antialias: true
+            });
+            
+            if (config.transparent) {
+                renderer.setClearColor(0x000000, 0);
+            } else {
+                renderer.setClearColor(0x000000, 1);
+            }
+            
+            container.appendChild(renderer.domElement);
+            
+            // 创建场景和相机
+            const scene = new THREE.Scene();
+            const camera = new THREE.OrthographicCamera(
+                -1, 1, 1, -1, 0.1, 10
+            );
+            camera.position.z = 1;
+            
+            // 创建平面几何体
+            const geometry = new THREE.PlaneGeometry(2, 2);
+            
+            // 创建着色器材质 - 调整uniforms类型以匹配Galaxy
+            const material = new THREE.ShaderMaterial({
+                vertexShader,
+                fragmentShader,
+                uniforms: {
+                    uTime: { value: 0 },
+                    uResolution: { value: new THREE.Vector3(0, 0, 0) },
+                    uFocal: { value: new Float32Array(config.focal) },
+                    uRotation: { value: new Float32Array(config.rotation) },
+                    uStarSpeed: { value: config.starSpeed },
+                    uDensity: { value: config.density },
+                    uHueShift: { value: config.hueShift },
+                    uSpeed: { value: config.speed },
+                    uMouse: { value: new Float32Array([0.5, 0.5]) },
+                    uGlowIntensity: { value: config.glowIntensity },
+                    uSaturation: { value: config.saturation },
+                    uMouseRepulsion: { value: config.mouseRepulsion },
+                    uTwinkleIntensity: { value: config.twinkleIntensity },
+                    uRotationSpeed: { value: config.rotationSpeed },
+                    uRepulsionStrength: { value: config.repulsionStrength },
+                    uMouseActiveFactor: { value: 0.0 },
+                    uAutoCenterRepulsion: { value: config.autoCenterRepulsion },
+                    uTransparent: { value: config.transparent }
+                },
+                transparent: config.transparent,
+                depthWrite: false
+            });
+            
+            // 创建网格
+            const mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+            
+            // 鼠标状态 - 修改为let以便可以更新
+            let targetMousePos = { x: 0.5, y: 0.5 };
+            let smoothMousePos = { x: 0.5, y: 0.5 };
+            let targetMouseActive = 0.0;
+            let smoothMouseActive = 0.0;
+            
+            // 调整大小函数 - 更精确地设置分辨率
+            function resize() {
+                const width = container.offsetWidth;
+                const height = container.offsetHeight;
+                
+                renderer.setSize(width, height);
+                
+                // 更新分辨率uniform
+                material.uniforms.uResolution.value.x = width;
+                material.uniforms.uResolution.value.y = height;
+                material.uniforms.uResolution.value.z = width / height;
+            }
+            
+            // 动画循环 - 调整响应速度使其更自然
+            function animate(t) {
+                const timestamp = t || performance.now();
+                requestAnimationFrame(animate);
+                
+                if (!config.disableAnimation) {
+                    material.uniforms.uTime.value = timestamp * 0.001;
+                    material.uniforms.uStarSpeed.value = (timestamp * 0.001 * config.starSpeed) / 10.0;
+                }
+                
+                // 平滑鼠标位置 - 降低响应速度
+                const lerpFactor = 0.1; // 更自然的响应速度
+                smoothMousePos.x += (targetMousePos.x - smoothMousePos.x) * lerpFactor;
+                smoothMousePos.y += (targetMousePos.y - smoothMousePos.y) * lerpFactor;
+                smoothMouseActive += (targetMouseActive - smoothMouseActive) * lerpFactor;
+                
+                // 更新鼠标uniform - 确保正确更新
+                material.uniforms.uMouse.value[0] = smoothMousePos.x;
+                material.uniforms.uMouse.value[1] = smoothMousePos.y;
+                material.uniforms.uMouseActiveFactor.value = smoothMouseActive;
+                
+                // 渲染
+                renderer.render(scene, camera);
+            }
+            
+            // 鼠标移动处理 - 优化位置计算以增强交互效果
+            function handleMouseMove(e) {
+                const rect = container.getBoundingClientRect();
+                // 转换为标准化坐标 [-1, 1] 然后再转换回 [0, 1]
+                const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+                const y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+                
+                // 转换回0-1范围，并增强效果
+                targetMousePos.x = (x + 1) * 0.5;
+                targetMousePos.y = (y + 1) * 0.5;
+                
+                // 激活鼠标交互
+                targetMouseActive = 1.0;
+            }
+            
+            // 鼠标离开处理 - 平滑过渡回中心
+            function handleMouseLeave() {
+                // 平滑过渡回中心
+                targetMouseActive = 0.0;
+            }
+            
+            // 事件监听
+            window.addEventListener('resize', resize);
+            if (config.mouseInteraction) {
+                container.addEventListener('mousemove', handleMouseMove);
+                container.addEventListener('mouseleave', handleMouseLeave);
+            }
+            
+            // 初始化
+            resize();
+            
+            // 获取渲染器的canvas元素，用于控制星空显现动画
+            const canvas = renderer.domElement;
+            canvas.style.opacity = '0';
+            canvas.style.transition = 'opacity 2s ease';
+            
+            // 星空显现动画
+            setTimeout(() => {
+                canvas.style.opacity = '1';
+                
+                // 文字显现动画
+                setTimeout(() => {
+                    const titleText = document.querySelector('.title-text');
+                    if (titleText) {
+                        titleText.style.opacity = '1';
+                    }
+                    
+                    // 按钮显现动画
+                    setTimeout(() => {
+                        const buttonsContainer = document.querySelector('.buttons-container');
+                        if (buttonsContainer) {
+                            buttonsContainer.style.opacity = '1';
+                        }
+                    }, 1000); // 按钮在文字出现后1秒出现
+                }, 1500); // 文字在星空显现后1.5秒出现
+            }, 100); // 稍微延迟一点开始星空显现动画
+            
+            requestAnimationFrame(animate);
+            
+            // 去除了加载动画控制逻辑
+            
+            // 页面卸载前清理
+            window.addEventListener('beforeunload', () => {
+                window.removeEventListener('resize', resize);
+                if (config.mouseInteraction) {
+                    container.removeEventListener('mousemove', handleMouseMove);
+                    container.removeEventListener('mouseleave', handleMouseLeave);
+                }
+                renderer.dispose();
+                material.dispose();
+                geometry.dispose();
+            });
+        });
+    </script>
+</body>
+</html>

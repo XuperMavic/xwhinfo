@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>世界探索 - 个人信息展示网站</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        /* 导航栏样式 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 1000;
+        }
+        
+        /* 左侧头像图标 */
+        .avatar-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .avatar-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            object-fit: contain;
+        }
+        
+        .avatar-icon:hover {
+            transform: scale(1.1);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* 右侧导航文本容器 */
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        /* 导航文本样式 */
+        .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 5px 0;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: #fff;
+        }
+        
+        .nav-link.active {
+            color: #fff;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            border-radius: 1px;
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+        
+        .nav-link.active::after {
+            width: 100%;
+            left: 0;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+        
+        /* 主内容区域 */
+        .main-content {
+            margin-top: 80px;
+            width: 100%;
+            max-width: 960px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 40px;
+            min-height: calc(100vh - 80px);
+        }
+        
+        /* 板块样式 */
+        .section {
+            margin-bottom: 80px;
+        }
+        
+        /* 标题样式 */
+        .section-title {
+            font-size: 38.4px;
+            margin-bottom: 24px;
+            text-align: center;
+            background: linear-gradient(270deg, #4158D0, #C850C0, #8338EC, #FFCC70, #FF6B6B, #FB5607, #2EC4B6, #4158D0);
+            background-size: 800% 800%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            font-weight: bold;
+            text-shadow: 0 0 30px rgba(200, 80, 192, 0.3);
+            animation: gradientAnimation 15s ease infinite;
+        }
+        
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        /* 世界介绍样式 */
+        .world-intro {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #ccc;
+            margin: 0 auto;
+            text-align: left;
+        }
+        
+        /* 等阶划分样式 */
+        .rank-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25.6px;
+            margin: 0 auto;
+        }
+        
+        .rank-item {
+            padding: 10px 0;
+        }
+        
+        .rank-name {
+            font-size: 22.4px;
+            margin-bottom: 15px;
+            color: #fff;
+            font-weight: bold;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .rank-name::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #4158D0, #C850C0);
+            opacity: 0.7;
+        }
+        
+        .rank-detail {
+            font-size: 12.8px;
+            color: #ccc;
+            line-height: 1.8;
+            margin-bottom: 8px;
+            padding-left: 5px;
+        }
+        
+        /* 异能列表样式 */
+        .ability-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 0 auto;
+        }
+        
+        .ability-item {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        
+        .ability-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 25px;
+            margin-bottom: 16px;
+            position: relative;
+        }
+        
+        .ability-level {
+            font-size: 38.4px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            line-height: 1;
+            text-transform: uppercase;
+            filter: brightness(1.1);
+            text-align: center;
+            flex: 0 0 auto;
+            width: 100px;
+        }
+        
+        .ability-level.SSS {
+            color: #8338EC;
+            text-shadow: 0 0 35px rgba(131, 56, 236, 0.7), 0 0 10px rgba(131, 56, 236, 0.9);
+        }
+        
+        .ability-level.SS {
+            color: #E63946;
+            text-shadow: 0 0 35px rgba(230, 57, 70, 0.7), 0 0 10px rgba(230, 57, 70, 0.9);
+        }
+        
+        .ability-level.S {
+            color: #41A6F6;
+            text-shadow: 0 0 35px rgba(65, 166, 246, 0.7), 0 0 10px rgba(65, 166, 246, 0.9);
+        }
+        
+        .ability-level.A {
+            color: #FFD700;
+            text-shadow: 0 0 35px rgba(255, 215, 0, 0.7), 0 0 10px rgba(255, 215, 0, 0.9);
+        }
+        
+        .ability-level.B {
+            color: #00FF7F;
+            text-shadow: 0 0 35px rgba(0, 255, 127, 0.7), 0 0 10px rgba(0, 255, 127, 0.9);
+        }
+        
+        .ability-level.C {
+            color: #C0C0C0;
+            text-shadow: 0 0 35px rgba(192, 192, 192, 0.7), 0 0 10px rgba(192, 192, 192, 0.9);
+        }
+        
+        /* 异能名称样式 - 改为白色 */
+        .ability-name {
+            font-size: 25.6px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.6), 0 0 8px rgba(255, 255, 255, 0.8);
+            letter-spacing: 1px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            filter: brightness(1.2);
+        }
+        
+        .ability-description {
+            font-size: 14.4px;
+            color: #fff;
+            line-height: 1.8;
+            margin: 20px 0 16px 0;
+        }
+        
+        .ability-reason {
+            font-size: 12.8px;
+            color: #aaa;
+            line-height: 1.6;
+            font-style: normal;
+            font-style: italic;
+        }
+        
+
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 20px;
+                height: 70px;
+            }
+            
+            .avatar-icon {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .nav-links {
+                gap: 20px;
+            }
+            
+            .nav-link {
+                font-size: 14px;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <!-- 左侧头像图标 -->
+        <div class="avatar-container">
+            <img src="../icons/more-avatar.png" alt="返回首页" class="avatar-icon" onclick="window.location.href='galaxy.html'">
+        </div>
+        
+        <!-- 右侧导航文本 -->
+        <div class="nav-links">
+            <span class="nav-link active">异能世界</span>
+            <span class="nav-link">修仙世界</span>
+            <span class="nav-link">转职世界</span>
+            <span class="nav-link">现实世界</span>
+        </div>
+    </nav>
+    
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <!-- 第一板块：世界介绍 -->
+        <section class="section">
+            <h2 class="section-title">世界介绍</h2>
+            <div class="world-intro">
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在这个异能世界中，人类被赋予了超凡的力量。神奇的觉醒石降临地球，由其衍生石制作成的觉醒祭台可以帮助人类于18岁激发潜能，使其获得强大而神秘的异能能力。</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这些能力被称为"异能"，它们由人类自身的特长或潜力激发而来。人类在18岁之前展现出的特长、执念、努力等，都有可能被觉醒祭台激发出来成为异能。</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不同个体的异能多种多样，从基础的的元素控制到神秘的精神操纵。随着时间的推移，异能者们逐渐形成了自己的社会体系，并且根据能力的强弱划分出了严格的等级制度。</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在这个世界里，人类并非得天独厚。未知来源的异兽、异族，或是人类的死敌、或是人类的盟友。故而，人类的异能既是力量的象征，也是责任的象征。</p>
+            </div>
+        </section>
+        
+        <!-- 第二板块：等阶划分 -->
+        <section class="section">
+            <h2 class="section-title">等阶划分</h2>
+            <div class="rank-container">
+                <!-- 1阶 -->
+                <div class="rank-item">
+                    <h3 class="rank-name">1阶：觉醒</h3>
+                    <p class="rank-detail">级别介绍：探索自己的异能。</p>
+                    <p class="rank-detail">判定方式：接受觉醒祭台，激发潜在能力。</p>
+                    <p class="rank-detail">举例：绝大多数高三学生。</p>
+                </div>
+                
+                <!-- 2阶 -->
+                <div class="rank-item">
+                    <h3 class="rank-name">2阶：熟练</h3>
+                    <p class="rank-detail">级别介绍：简单运用自己的异能。</p>
+                    <p class="rank-detail">判定方式：能够了解自己的异能的基本特性。</p>
+                    <p class="rank-detail">举例：绝大多数一流大学大一、大二生；极少数特招高三生。</p>
+                </div>
+                
+                <!-- 3阶 -->
+                <div class="rank-item">
+                    <h3 class="rank-name">3阶：精通</h3>
+                    <p class="rank-detail">级别介绍：简单使用异能实现技能。</p>
+                    <p class="rank-detail">判定方式：能够掌握自己的异能对应的技能。</p>
+                    <p class="rank-detail">举例：绝大多数一流大学大三、大四生；顶级大学的大二、大三生。</p>
+                </div>
+                
+                <!-- 4阶 -->
+                <div class="rank-item">
+                    <h3 class="rank-name">4阶：专家</h3>
+                    <p class="rank-detail">级别介绍：熟练运用更多的技能。</p>
+                    <p class="rank-detail">判定方式：能够熟练运用自己每个异能的至少一个技能。</p>
+                    <p class="rank-detail">举例：顶级大学的大三、大四学生；绝大多数四、五线小城的城主。</p>
+                </div>
+                
+                <!-- 5阶 -->
+                <div class="rank-item">
+                    <h3 class="rank-name">5阶：大师</h3>
+                    <p class="rank-detail">级别介绍：探究异能的全新技能。</p>
+                    <p class="rank-detail">判定方式：能够熟练掌握自己每个异能的所有常见、基础技能。</p>
+                    <p class="rank-detail">举例：顶级大学的研究生；绝大多数一流大学导师；绝大多数三、四线城市的城主。</p>
+                </div>
+                
+                <!-- 6阶 -->
+                <div class="rank-item">
+                    <h3 class="rank-name">6阶：宗师</h3>
+                    <p class="rank-detail">级别介绍：探索异能的特性。</p>
+                    <p class="rank-detail">判定方式：能够开发出一种前所未有的异能技能。</p>
+                    <p class="rank-detail">举例：顶级大学博士生；普通大学导师；绝大多数二、三线城市的城主。</p>
+                </div>
+                
+                <!-- 7阶 -->
+                <div class="rank-item">
+                    <h3 class="rank-name">7阶：超凡</h3>
+                    <p class="rank-detail">级别介绍：探索如何通过异能形成领域。</p>
+                    <p class="rank-detail">判定方式：能够实现不同异能的技能组合技。</p>
+                    <p class="rank-detail">举例：顶级大学院长；绝大多数一线城市的城主。</p>
+                </div>
+                
+                <!-- 8阶 -->
+                <div class="rank-item">
+                    <h3 class="rank-name">8阶：传奇</h3>
+                    <p class="rank-detail">级别介绍：初步感知异能本质，发展领域能力。</p>
+                    <p class="rank-detail">判定方式：能够形成领域。</p>
+                    <p class="rank-detail">举例：顶级大学校长；顶级国家护国大将；一流国家国主。</p>
+                </div>
+                
+                <!-- 9阶 -->
+                <div class="rank-item">
+                    <h3 class="rank-name">9阶：史诗</h3>
+                    <p class="rank-detail">级别介绍：探知法则。</p>
+                    <p class="rank-detail">判定方式：能够让领域形成独立空间。</p>
+                    <p class="rank-detail">举例：顶级国家国主。</p>
+                </div>
+                
+                <!-- 10阶 -->
+                <div class="rank-item">
+                    <h3 class="rank-name">10阶：神话</h3>
+                    <p class="rank-detail">级别介绍：接触法则。</p>
+                    <p class="rank-detail">判定方式：能够让异能返璞归真。</p>
+                    <p class="rank-detail">举例：三流种族的最强者。</p>
+                </div>
+                
+                <!-- 11阶 -->
+                <div class="rank-item">
+                    <h3 class="rank-name">11阶：君王</h3>
+                    <p class="rank-detail">级别介绍：掌握法则的更多分支。</p>
+                    <p class="rank-detail">判定方式：能够掌握一个法则分支。</p>
+                    <p class="rank-detail">举例：二流种族的最强者。</p>
+                </div>
+                
+                <!-- 12阶 -->
+                <div class="rank-item">
+                    <h3 class="rank-name">12阶：不朽</h3>
+                    <p class="rank-detail">级别介绍：与同一法则的其他预选者竞争，以获得法则的青睐。</p>
+                    <p class="rank-detail">判定方式：能够成为一条法则的预选者。</p>
+                    <p class="rank-detail">举例：一流种族的最强者。</p>
+                </div>
+                
+                <!-- 13阶 -->
+                <div class="rank-item">
+                    <h3 class="rank-name">13阶：主宰</h3>
+                    <p class="rank-detail">级别介绍：设法扩大自己掌握法则。</p>
+                    <p class="rank-detail">判定方式：能够掌握一条法则。</p>
+                    <p class="rank-detail">举例：顶级种族的最强者。</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 第三板块：我的异能 -->
+        <section class="section">
+            <h2 class="section-title">我的异能</h2>
+            <div class="ability-container">
+                <!-- SSS级别异能 -->
+                <div class="ability-item SSS">
+                    <div class="ability-header">
+                        <span class="ability-level SSS">SSS</span>
+                        <h3 class="ability-name">梦境行者</h3>
+    
+                    </div>
+                    <p class="ability-description">能够在睡觉做梦时会“附身”于其他世界的“我”。在现实世界中，甚至能带出部分梦境中的能力；还能如梦境一般，有几率潜移默化地无视等阶略微改变他人部分认知与想法。这些“我”有着不同身份。或许这是平行世界的另一个我；或许这是在另一位面的其他人；或许这些“我”会相遇；或许它们是我的分身；又或许，这是一条法则在挑选它的候选人……<br>梦境行者由于可以打破世界壁垒，做到类似穿越界域、无视世界屏障，甚至触及空间法则、时间法则、乃至更为深层次的未知领域，甚至与法则筛选继承人挂钩，故而SSS级是异能评级的极限，而不是这一异能的极限，就算其未知性与不可确定性也不可改变其评级。</p>
+                    <p class="ability-reason">我小学、初中时做梦，其中有40%可以在一开始意识到自己是在做梦；30%可以在最后意识到自己是在做梦……其中有一半以上梦境中我都在想方设法把梦境中的事物记录下来带回现实……其中有至少5个梦境反复出现至少3次……</p>
+                </div>
+                
+                <!-- SS级别异能 1 -->
+                <div class="ability-item SS">
+                    <div class="ability-header">
+                        <span class="ability-level SS">SS</span>
+                        <h3 class="ability-name">代价诅咒</h3>
+                    </div>
+                    <p class="ability-description">有概率可以让敌对自己或的人付出代价，概率随着对我的影响的增加而增加。条件是跨过一些附加的阻碍，如若跨过，则对方被诅咒；如若没有跨过，自身造成反噬。<br>诅咒这种虚无缥缈又似乎与气运相关的异能，其无疑超过了S级的范畴。但由于其达成条件与反噬代价，使其在SS级中并非顶级。</p>
+                    <p class="ability-reason">现实生活中……（违禁内容不便展示）</p>
+                </div>
+                
+                <!-- SS级别异能 2 -->
+                <div class="ability-item SS">
+                    <div class="ability-header">
+                        <span class="ability-level SS">SS</span>
+                        <h3 class="ability-name">反超夺冠</h3>
+                    </div>
+                    <p class="ability-description">当位于群体中不利地位时，只要条件允许或气运充足，大概率最终可以反超并夺冠。<br>反超夺冠是“概念级”的存在，使其超出了S级的范畴。但由于其达成条件，使其在SS级中并非顶级。</p>
+                    <p class="ability-reason">在初中刚入学时我的成绩不算最好，但虽然教学环境与条件并非完全顺着我来，依然通过努力挤进年级数一数二。我记得的从初一第一次到初三某次（之后的忘了）的大考年级排名分别是：19、19、44、33、26、3、13、3、2、1。<br>之后高中中，我的物理一开始摸底考年级第一，但后来粗心等各种原因一直属于班级后列，不过因为学校的物理教学与作业并非完全阻挡我发展（约到后来老师管得越松），故而高三大小物理考试有80%我都是年级第一；可惜的是数学等其他学科并非如此顺利，故而都表现不佳。</p>
+                </div>
+                
+                <!-- S级别异能 -->
+                <div class="ability-item S">
+                    <div class="ability-header">
+                        <span class="ability-level S">S</span>
+                        <h3 class="ability-name">创新想象</h3>
+                    </div>
+                    <p class="ability-description">能够发挥想象力与创造力，比其他人更容易探索异能、开发技能、形成领域、感知法则、探索未知……<br>创新想象是高等阶晋级的福音。每个拥有创新想象的人无一不是开发技能、领域、法则的佼佼者，能察人之所不能、创人之所不知。这使得这一异能十分稀少、强大，也造就了一个个立于人类之巅的传奇，故而被评为S级。</p>
+                    <p class="ability-reason">我从小就富含想象力，如有不同的梦境，玩乐高、汽车、3D纸模型玩具时的想象、躺在床上的“异世界”构思、在小学春秋游汽车上讲《我的世界》有关探索、对抗、陷阱的故事……也极具创新创造能力，能发现许多生活中的“创新点”。<br>初中时，参加学校能接触到的所有项目式比赛……高中时,当同学们都苦恼创新课题选择时，我提供了100多个让博士后老师夸赞的有效想法，虽然其中许多需要大学知识或需要耗时耗材，但都具备足有创新性、可行性、或有应用市场……到了大学，我的创新课题点也源源不断……</p>
+                </div>
+                
+                <!-- A级别异能 -->
+                <div class="ability-item A">
+                    <div class="ability-header">
+                        <span class="ability-level A">A</span>
+                        <h3 class="ability-name">超感天赋</h3>
+    
+                    </div>
+                    <p class="ability-description">可以对元素乃至法则有极强亲和力，有极强的天赋与战斗直觉。于异能探索中总能先人一步，于技能开发中总能胜人一筹，于战斗中总能抓到时机……<br>超感天赋是天骄的金钥匙。其赋予人的”天赋“、”直觉“、”本能“等，无一不使拥有这一异能的人等阶遥遥领先、越小阶级而战。这无疑使其被评为顶尖A级异能。</p>
+                    <p class="ability-reason">现实生活中我在一些技能中小有天赋，如：<br>在小学，我第一次无师自己滑雪，3天超8小时未摔一跤，与同龄滑雪多次同学表现出的水平相当；<br>在初中，低年级假期和小学中顶尖学霸学冲浪，我时其中最快掌握，在克服独有的水下不能睁眼的情况下第一个独自站起的；<br>在初中，台球课上与学过同学同处第一梯队；<br>在初中，PPT、短视频、摄影无人能出我之右，负责班级全部相关事宜，为校领导高层所熟知；<br>在高中，我自学乒乓球，展现出极快进步速度，1年就达到可以与小学第一梯队的学过4年以上的同学打的有来有回甚至战而胜之，在“第一球桌”7人5球制中有”三圈大满贯“的称号。</p>
+                </div>
+                
+                <!-- B级别异能 1 -->
+                <div class="ability-item B">
+                    <div class="ability-header">
+                        <span class="ability-level B">B</span>
+                        <h3 class="ability-name">心灵感应</h3>
+                    </div>
+                    <p class="ability-description">能够感知到比自己等阶低的人的性格、情感、想法等，与自己的等阶差距越大，感知越详细；能够判断比自己境界高的人的善意、敌意，与自己的等阶相差越大，判断越模糊。<br>心灵感应属于稀有的特殊异能，但因为随着等阶的提高，高等阶者能够使用强大的精神力做到类似的效果，故而排名无法更进一步。</p>
+                    <p class="ability-reason">我初中展现出能够判断他人想法、老师风格的能力，即情商较高。适合担当队长，可以根据队员特长、性格分配任务、完成比赛等。</p>
+                </div>
+                
+                <!-- B级别异能 2 -->
+                <div class="ability-item B">
+                    <div class="ability-header">
+                        <span class="ability-level B">B</span>
+                        <h3 class="ability-name">御空飞行</h3>
+                    </div>
+                    <p class="ability-description">能够在低阶时就在空中飞行，飞行速度不高但高度不限。但鲜为人知的是，其中极少数可以无视禁制，甚至一定程度上对抗法则，这或许可以被看做异能变异。<br>御空飞行本身评级或许仅能触及C的门槛，仅因其中这极少数的或许达到S级以上的个例而提高评级。其背后原理目前尚未可知，或是对身体控制的一种体现，或是念力的一种体现。</p>
+                    <p class="ability-reason">我在梦中如果能够略微感知到不是现实，那么100%会有的一个能力就是御空飞行。</p>
+                </div>
+                
+                <!-- C级别异能 -->
+                <div class="ability-item C">
+                    <div class="ability-header">
+                        <span class="ability-level C">C</span>
+                        <h3 class="ability-name">窥探未来</h3>
+                    </div>
+                    <p class="ability-description">能够在一些重要事件片段时感觉仿佛经历过一般，从而在一定程度上探知整个事件过程中的下一步走向。该能力于重大事件中能够帮助所有者占据极大优势或有利地位。<br>窥探未来本身虽似乎触及时间法则或特殊的存在，但是一些声称自己有类似能力的人不能准确预判事情走向，故而在之后一再被认为这只是普通的海马效应，后又一致怀疑是否存在这一异能，故而评级一降再降。</p>
+                    <p class="ability-reason">我小学初中时的一些事件，比如看美剧《24小时》剧情时，总感觉好像看过或经历过，感觉历历在目、无比熟悉，却又记不清是何时经历过。</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        // 导航文本点击效果
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                // 移除所有链接的active状态
+                navLinks.forEach(l => l.classList.remove('active'));
+                // 为当前点击的链接添加active状态
+                link.classList.add('active');
+                
+                // 根据点击的链接切换到对应页面
+                const worldName = link.textContent;
+                if (worldName === '异能世界') {
+                        window.location.href = 'yineng.html';
+                    } else if (worldName === '修仙世界') {
+                        window.location.href = 'xiuxian.html';
+                    } else if (worldName === '转职世界') {
+                        window.location.href = 'zhuanzhi.html';
+                    } else if (worldName === '现实世界') {
+                        window.location.href = 'reality.html';
+                    }
+            });
+        });
+    </script>
+</body>
+</html>
