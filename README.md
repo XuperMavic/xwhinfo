@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # 个人信息展示网站
 
 这是一个用于展示个人信息的静态网站模板，您可以通过GitHub或Gitee等平台托管，无需购买服务器。
@@ -87,3 +88,7 @@ Trae/
 # xwhinfo
 Information about me, Xiong Wenhao.
 >>>>>>> 9bbb525a0a1a5160181b1d5a043b5a0610574de6
+=======
+# xwhinfo
+Information about me, Xiong Wenhao.
+>>>>>>> c05eeecc981fda3f590525674405446db7755bcc
